@@ -723,10 +723,10 @@
                                 </div>
                                 <div class="flex items-center justify-between pt-3 border-t border-gray-50">
                                     <span class="text-xs font-medium text-gray-600">In tự động (không hộp thoại)</span>
-                                    <label class="kiki2-toggle">
-                                        <input id="printer-auto-print" type="checkbox" checked>
-                                        <span class="kiki2-slider"></span>
-                                    </label>
+                                    <div class="flex items-center">
+                                        <input id="printer-auto-print" class="toggle-checkbox" type="checkbox" checked>
+                                        <label for="printer-auto-print" class="toggle-label"></label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -777,10 +777,10 @@
                                                 <p class="font-bold text-gray-800 text-xs">Hiển thị Logo</p>
                                                 <p class="text-[10px] text-gray-500">Logo cửa hàng trên đầu hóa đơn</p>
                                             </div>
-                                            <label class="kiki2-toggle">
-                                                <input id="invoice-logo-toggle" type="checkbox" checked onchange="togglePreview('logo', this.checked)">
-                                                <span class="kiki2-slider"></span>
-                                            </label>
+                                            <div class="flex items-center">
+                                                <input id="invoice-logo-toggle" class="toggle-checkbox" type="checkbox" checked onchange="togglePreview('logo', this.checked)">
+                                                <label for="invoice-logo-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <!-- QR -->
                                         <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
@@ -788,10 +788,10 @@
                                                 <p class="font-bold text-gray-800 text-xs">Mã QR Thanh toán</p>
                                                 <p class="text-[10px] text-gray-500">QR code chuyển khoản</p>
                                             </div>
-                                            <label class="kiki2-toggle">
-                                                <input id="invoice-qr-toggle" type="checkbox" checked onchange="togglePreview('qr', this.checked)">
-                                                <span class="kiki2-slider"></span>
-                                            </label>
+                                            <div class="flex items-center">
+                                                <input id="invoice-qr-toggle" class="toggle-checkbox" type="checkbox" checked onchange="togglePreview('qr', this.checked)">
+                                                <label for="invoice-qr-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <!-- WiFi -->
                                         <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
@@ -799,10 +799,10 @@
                                                 <p class="font-bold text-gray-800 text-xs">Mật khẩu WiFi</p>
                                                 <p class="text-[10px] text-gray-500">Hiện WiFi password cho khách</p>
                                             </div>
-                                            <label class="kiki2-toggle">
-                                                <input id="invoice-wifi-toggle" type="checkbox" checked onchange="togglePreview('wifi', this.checked)">
-                                                <span class="kiki2-slider"></span>
-                                            </label>
+                                            <div class="flex items-center">
+                                                <input id="invoice-wifi-toggle" class="toggle-checkbox" type="checkbox" checked onchange="togglePreview('wifi', this.checked)">
+                                                <label for="invoice-wifi-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <!-- MST -->
                                         <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
@@ -810,10 +810,10 @@
                                                 <p class="font-bold text-gray-800 text-xs">Mã số thuế</p>
                                                 <p class="text-[10px] text-gray-500">MST cửa hàng</p>
                                             </div>
-                                            <label class="kiki2-toggle">
-                                                <input id="invoice-mst-toggle" type="checkbox" checked onchange="togglePreview('mst', this.checked)">
-                                                <span class="kiki2-slider"></span>
-                                            </label>
+                                            <div class="flex items-center">
+                                                <input id="invoice-mst-toggle" class="toggle-checkbox" type="checkbox" checked onchange="togglePreview('mst', this.checked)">
+                                                <label for="invoice-mst-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <!-- Footer Note -->
                                         <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
@@ -821,10 +821,10 @@
                                                 <p class="font-bold text-gray-800 text-xs">Ghi chú cuối</p>
                                                 <p class="text-[10px] text-gray-500">Lời cảm ơn / thông tin thêm</p>
                                             </div>
-                                            <label class="kiki2-toggle">
-                                                <input id="invoice-footer-note-toggle" type="checkbox" checked onchange="togglePreview('footer-note', this.checked)">
-                                                <span class="kiki2-slider"></span>
-                                            </label>
+                                            <div class="flex items-center">
+                                                <input id="invoice-footer-note-toggle" class="toggle-checkbox" type="checkbox" checked onchange="togglePreview('footer-note', this.checked)">
+                                                <label for="invoice-footer-note-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -915,12 +915,12 @@
                                             <span class="font-bold text-blue-700 block">Bật in tem khi hoàn tất món</span>
                                             <p class="text-[10px] text-blue-500 font-medium">Tự động in tem khi đơn mang về thanh toán</p>
                                         </div>
-                                        <label class="kiki2-toggle">
-                                            <input id="sticker-auto-print" type="checkbox" checked onchange="handleMasterStickerToggle(this.checked)">
-                                            <span class="kiki2-slider"></span>
-                                        </label>
+                                        <div class="flex items-center">
+                                            <input id="toggle-master-tem" class="toggle-checkbox" type="checkbox" checked>
+                                            <label for="toggle-master-tem" class="toggle-label"></label>
+                                        </div>
                                     </div>
-                                    <div id="sticker-options-container" class="space-y-5 transition-all duration-300">
+                                    <div id="tem-options-container" class="space-y-5 transition-all duration-300">
                                         <div>
                                             <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Kích thước tem</label>
                                             <div class="flex flex-wrap gap-2">
@@ -931,19 +931,31 @@
                                         </div>
                                         <div class="kiki2-option-row">
                                             <span>In số thứ tự (#STT)</span>
-                                            <label class="kiki2-toggle"><input id="sticker-stt-toggle" type="checkbox" checked onchange="toggleStickerPreview('stt', this.checked)"><span class="kiki2-slider"></span></label>
+                                            <div class="flex items-center">
+                                                <input id="sticker-stt-toggle" class="toggle-checkbox" type="checkbox" checked onchange="toggleStickerPreview('stt', this.checked)">
+                                                <label for="sticker-stt-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <div class="kiki2-option-row">
                                             <span>In tùy chọn món (Size, Đá...)</span>
-                                            <label class="kiki2-toggle"><input id="sticker-options-toggle" type="checkbox" checked onchange="toggleStickerPreview('options', this.checked)"><span class="kiki2-slider"></span></label>
+                                            <div class="flex items-center">
+                                                <input id="sticker-options-toggle" class="toggle-checkbox" type="checkbox" checked onchange="toggleStickerPreview('options', this.checked)">
+                                                <label for="sticker-options-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <div class="kiki2-option-row">
                                             <span>Tên khách hàng</span>
-                                            <label class="kiki2-toggle"><input id="sticker-customer-toggle" type="checkbox" onchange="toggleStickerPreview('customer', this.checked)"><span class="kiki2-slider"></span></label>
+                                            <div class="flex items-center">
+                                                <input id="sticker-customer-toggle" class="toggle-checkbox" type="checkbox" onchange="toggleStickerPreview('customer', this.checked)">
+                                                <label for="sticker-customer-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <div class="kiki2-option-row">
                                             <span>Thời gian in</span>
-                                            <label class="kiki2-toggle"><input id="sticker-time-toggle" type="checkbox" checked onchange="toggleStickerPreview('time', this.checked)"><span class="kiki2-slider"></span></label>
+                                            <div class="flex items-center">
+                                                <input id="sticker-time-toggle" class="toggle-checkbox" type="checkbox" checked onchange="toggleStickerPreview('time', this.checked)">
+                                                <label for="sticker-time-toggle" class="toggle-label"></label>
+                                            </div>
                                         </div>
                                         <button class="w-full mt-2 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">Test In Tem</button>
                                     </div>
@@ -1751,6 +1763,28 @@
 
         // Initialize on load
         document.addEventListener('DOMContentLoaded', loadPrintConfig);
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const masterToggle = document.getElementById('toggle-master-tem');
+        const optionsContainer = document.getElementById('tem-options-container');
+        
+        if(masterToggle && optionsContainer) {
+          function updateTemOptions() {
+            if(masterToggle.checked) {
+              optionsContainer.classList.remove('disabled-section');
+            } else {
+              optionsContainer.classList.add('disabled-section');
+            }
+          }
+          
+          // Chạy ngay khi load trang
+          updateTemOptions();
+          
+          // Chạy khi người dùng bấm gạt
+          masterToggle.addEventListener('change', updateTemOptions);
+        }
+      });
     </script>
     <div id="kiki2-toast"></div>
 </body>
