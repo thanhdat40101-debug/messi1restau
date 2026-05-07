@@ -12,6 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- New Sidebar CSS -->
+    <link rel="stylesheet" href="sidebar.css">
     
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f4f6f8; }
@@ -49,51 +53,188 @@
         .summary-card { background: white; border: 1px solid #e5e7eb; border-radius: 16px; padding: 12px; text-align: center; flex: 1; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
         .summary-card .val { font-size: 18px; font-weight: 800; display: block; line-height: 1.2; }
         .summary-card .lbl { font-size: 9px; font-weight: 700; color: #94a3b8; letter-spacing: 0.05em; margin-top: 4px; display: block; }
+
+        /* --- Responsive Grid & Table Adjustments --- */
+        @media (max-width: 768px) {
+            .grid-cols-4 { grid-cols-2 !important; }
+            .md\:grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            .lg\:grid-cols-3 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+            .md\:grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+            
+            /* Table responsive wrapper */
+            .overflow-x-auto {
+                -webkit-overflow-scrolling: touch;
+                margin-bottom: 1rem;
+            }
+            
+            /* KPI Cards adjustment */
+            .grid-cols-1.md\:grid-cols-4 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 12px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-cols-1.md\:grid-cols-4 {
+                grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            }
+            .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+        }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-gray-800">
 
-    <!-- CỘT MENU BÊN TRÁI -->
-    <aside class="w-64 bg-[#f8fafc] flex flex-col h-full border-r border-gray-200 z-20">
-        <div class="p-6 pb-2 mt-2">
-            <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <span class="text-pink-500"><i class="fa-solid fa-mug-hot"></i></span> Tiệm GOAT
-            </h1>
+    <!-- CỘT MENU BÊN TRÁI (KIKI2 SIDEBAR) -->
+    <div class="kiki2-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="kiki2-sidebar" id="kiki2Sidebar">
+        <!-- 1. Header Section -->
+        <div class="kiki2-sidebar-header">
+            <div class="kiki2-logo">
+                <i class="ph-fill ph-storefront"></i>
+                <span>AI POS Manager</span>
+            </div>
+            <button class="kiki2-close-sidebar" onclick="toggleSidebar()">
+                <i class="ph ph-x"></i>
+            </button>
         </div>
-        <nav class="flex-1 overflow-y-auto py-4 px-4 space-y-1.5 text-sm font-medium text-gray-600">
-            <a onclick="switchView('dashboard')" id="menu-dashboard" class="sidebar-item sidebar-active flex items-center gap-3 px-4 py-3 rounded-lg text-white">
-                <i class="fa-solid fa-chart-simple w-5 text-center"></i> Dashboard
-            </a>
-            <a onclick="switchView('orders')" id="menu-orders" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-file-invoice w-5 text-center text-gray-400"></i> Quản Lý Đơn Hàng
-            </a>
-            
-            <a onclick="switchView('pos')" id="menu-pos" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-cash-register w-5 text-center text-gray-400"></i> Quầy Thu Ngân
-            </a>
-            <a onclick="switchView('products')" id="menu-products" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-burger w-5 text-center text-gray-400"></i> Quản Lý Món Ăn
-            </a>
-            <a onclick="switchView('categories')" id="menu-categories" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Quản Lý Danh Mục
-            </a>
-            <a onclick="switchView('tables')" id="menu-tables" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-table w-5 text-center text-gray-400"></i> Quản Lý Bàn
-            </a>
-            <a onclick="switchView('inventory')" id="menu-inventory" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-400"></i> Quản Lý Kho
-            </a>
-            <a onclick="switchView('staff')" id="menu-staff" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-users w-5 text-center text-gray-400"></i> Quản Lý Nhân Viên
-            </a>
-            <a onclick="switchView('shifts')" id="menu-shifts" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg">
-                <i class="fa-solid fa-clock w-5 text-center text-gray-400"></i> Quản Lý Ca
-            </a>
+        <div class="px-2 mb-4">
+            <h2 class="kiki2-store-name">Tiệm GOAT</h2>
+        </div>
+
+        <!-- 2. Navigation Menu (Middle Section) -->
+        <nav class="kiki2-sidebar-menu">
+            <ul class="kiki2-menu-list">
+                <li id="menu-dashboard" class="kiki2-menu-item kiki2-active">
+                    <a href="javascript:void(0)" onclick="switchView('dashboard')">
+                        <i class="ph ph-squares-four"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li id="menu-orders" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('orders')">
+                        <i class="ph ph-clipboard-text"></i>
+                        <span>Quản Lý Đơn Hàng</span>
+                    </a>
+                </li>
+                <li id="menu-pos" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('pos')">
+                        <i class="ph ph-monitor"></i>
+                        <span>Quầy Thu Ngân</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-cooking-pot"></i>
+                        <span>Bếp (KDS)</span>
+                    </a>
+                </li>
+                <li id="menu-products" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('products')">
+                        <i class="ph ph-hamburger"></i>
+                        <span>Quản Lý Món Ăn</span>
+                    </a>
+                </li>
+                <li id="menu-categories" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('categories')">
+                        <i class="ph ph-list-bullets"></i>
+                        <span>Quản Lý Danh Mục</span>
+                    </a>
+                </li>
+                <li id="menu-tables" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('tables')">
+                        <i class="ph ph-table"></i>
+                        <span>Quản Lý Bàn</span>
+                    </a>
+                </li>
+                <li id="menu-inventory" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('inventory')">
+                        <i class="ph ph-package"></i>
+                        <span>Quản Lý Kho</span>
+                    </a>
+                </li>
+                <li id="menu-staff" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('staff')">
+                        <i class="ph ph-users"></i>
+                        <span>Quản Lý Nhân Viên</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-user-circle"></i>
+                        <span>Khách Hàng</span>
+                    </a>
+                </li>
+                <li id="menu-shifts" class="kiki2-menu-item">
+                    <a href="javascript:void(0)" onclick="switchView('shifts')">
+                        <i class="ph ph-clock-counter-clockwise"></i>
+                        <span>Quản Lý Ca</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-ticket"></i>
+                        <span>Voucher</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-tag"></i>
+                        <span>Khuyến Mãi</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-crown"></i>
+                        <span>Gói Cước</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-file-text"></i>
+                        <span>Nhật Ký Hoạt Động</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-printer"></i>
+                        <span>Cấu Hình In Ấn</span>
+                    </a>
+                </li>
+                <li class="kiki2-menu-item">
+                    <a href="javascript:void(0)">
+                        <i class="ph ph-gear"></i>
+                        <span>Cấu hình Cửa Hàng</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
+
+        <!-- 3. Footer Section (User & Logout) -->
+        <div class="kiki2-sidebar-footer">
+            <div class="kiki2-user-profile">
+                <div class="kiki2-avatar">T</div>
+                <div class="kiki2-user-info">
+                    <span class="kiki2-user-name">Trần Nam</span>
+                    <span class="kiki2-user-role">ADMIN</span>
+                </div>
+            </div>
+            <button class="kiki2-logout-btn">
+                <i class="ph ph-sign-out"></i>
+                <span>Đăng xuất</span>
+            </button>
+        </div>
     </aside>
 
     <!-- NỘI DUNG CHÍNH -->
-    <main class="flex-1 h-full overflow-hidden relative">
+    <main class="flex-1 h-full overflow-hidden relative kiki2-content">
+        <!-- Mobile Header -->
+        <div class="kiki2-mobile-header">
+            <button class="kiki2-hamburger-btn" onclick="toggleSidebar()">
+                <i class="ph ph-list"></i>
+            </button>
+            <div class="kiki2-mobile-store-name">Tiệm GOAT</div>
+            <div class="w-8"></div> <!-- Spacer for balance -->
+        </div>
         
         <!-- VIEW 1: MÀN HÌNH DASHBOARD -->
         <div id="view-dashboard" class="h-full overflow-y-auto flex flex-col w-full absolute inset-0 bg-[#f4f6f8] transition-opacity duration-300">
@@ -392,6 +533,126 @@
                 </div>
             </div>
         </div>
+        <!-- VIEW 4: QUẦY THU NGÂN (POS) -->
+        <div id="view-pos" class="hidden h-full flex overflow-hidden absolute inset-0 transition-opacity duration-300">
+            <!-- Left: Product Catalog -->
+            <div class="flex-1 flex flex-col p-6 bg-[#f8fafc] overflow-hidden">
+                <!-- Search & Filters -->
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Tìm kiếm món ăn..." class="w-full pl-12 pr-4 py-3 bg-white border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0b5edd]/20 focus:border-[#0b5edd] transition shadow-sm">
+                    </div>
+                    <div class="flex bg-white p-1 rounded-xl border border-gray-100 shadow-sm">
+                        <button class="px-5 py-2 rounded-lg text-sm font-bold bg-[#eff6ff] text-[#0b5edd]">Tất cả</button>
+                        <button class="px-5 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-800 transition">Cà phê</button>
+                        <button class="px-5 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-800 transition">Trà sữa</button>
+                        <button class="px-5 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-800 transition">Đồ ăn vặt</button>
+                    </div>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto pb-8 pr-2 custom-scrollbar">
+                    <!-- Sample Product 1 -->
+                    <div class="bg-white rounded-[24px] border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+                        <div class="aspect-square bg-blue-50/50 flex items-center justify-center text-blue-200 text-5xl relative">
+                            <i class="fa-solid fa-mug-hot"></i>
+                            <button onclick="addToCart('sua chua keo', 55000)" class="absolute bottom-4 right-4 w-10 h-10 bg-[#0b5edd] text-white rounded-xl shadow-lg shadow-blue-100 flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all active:scale-95"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="p-4">
+                            <span class="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-1 rounded uppercase tracking-wider">Cà phê</span>
+                            <h4 class="font-bold text-gray-800 mt-2">sua chua keo</h4>
+                            <div class="flex justify-between items-center mt-3">
+                                <p class="text-[#0b5edd] font-extrabold">55.000 đ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample Product 2 -->
+                    <div class="bg-white rounded-[24px] border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+                        <div class="aspect-square bg-orange-50/50 flex items-center justify-center text-orange-200 text-5xl relative">
+                            <i class="fa-solid fa-ice-cream"></i>
+                            <button onclick="addToCart('den da', 33000)" class="absolute bottom-4 right-4 w-10 h-10 bg-[#0b5edd] text-white rounded-xl shadow-lg shadow-blue-100 flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all active:scale-95"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="p-4">
+                            <span class="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-1 rounded uppercase tracking-wider">Cà phê</span>
+                            <h4 class="font-bold text-gray-800 mt-2">den da</h4>
+                            <div class="flex justify-between items-center mt-3">
+                                <p class="text-[#0b5edd] font-extrabold">33.000 đ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample Product 3 -->
+                    <div class="bg-white rounded-[24px] border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+                        <div class="aspect-square bg-purple-50/50 flex items-center justify-center text-purple-200 text-5xl relative">
+                            <i class="fa-solid fa-bottle-water"></i>
+                            <button onclick="addToCart('nau da', 35000)" class="absolute bottom-4 right-4 w-10 h-10 bg-[#0b5edd] text-white rounded-xl shadow-lg shadow-blue-100 flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all active:scale-95"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="p-4">
+                            <span class="text-[10px] font-bold text-purple-500 bg-purple-50 px-2 py-1 rounded uppercase tracking-wider">Trà sữa</span>
+                            <h4 class="font-bold text-gray-800 mt-2">nau da</h4>
+                            <div class="flex justify-between items-center mt-3">
+                                <p class="text-[#0b5edd] font-extrabold">35.000 đ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Cart Sidebar -->
+            <div class="w-[380px] bg-white border-l border-gray-100 flex flex-col shadow-2xl z-10">
+                <div class="p-6 border-b border-gray-50 flex justify-between items-center">
+                    <h3 class="text-lg font-extrabold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-[#0b5edd]"></i> Đơn hàng
+                    </h3>
+                    <button onclick="clearCart()" class="text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-widest">Xóa tất cả</button>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex border-b border-gray-50 px-2">
+                    <button class="flex-1 py-3 text-[13px] font-bold text-[#0b5edd] border-b-2 border-[#0b5edd]">Tên món</button>
+                    <button class="flex-1 py-3 text-[13px] font-medium text-gray-400 hover:text-gray-600">Combo/SP</button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                    <!-- Empty State -->
+                    <div id="cart-empty" class="h-full flex flex-col items-center justify-center text-gray-300 opacity-60">
+                        <i class="fa-solid fa-basket-shopping text-6xl mb-4"></i>
+                        <p class="text-sm font-medium">Chưa có món nào được chọn</p>
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="p-6 bg-gray-50/50 border-t border-gray-100 space-y-4">
+                    <div class="relative">
+                        <i class="fa-solid fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Nhập mã giảm giá..." class="w-full pl-12 pr-12 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0b5edd] transition">
+                        <button class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold bg-[#0b5edd] text-white px-2 py-1.5 rounded uppercase">Áp dụng</button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm text-gray-500 font-medium">
+                            <span>Tạm tính</span>
+                            <span id="cart-subtotal" class="text-gray-800">0 đ</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-500 font-medium">
+                            <span>Giảm giá</span>
+                            <span class="text-red-500">-0 đ</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-dashed border-gray-200">
+                            <span class="text-base font-bold text-gray-800 uppercase">Tổng tiền</span>
+                            <span id="cart-total" class="text-2xl font-black text-[#0b5edd]">0 đ</span>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-[#115e3b] hover:bg-[#0d4a2f] text-white font-black py-4 rounded-2xl shadow-lg shadow-green-100 transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
+                        <i class="fa-solid fa-receipt text-lg"></i> THANH TOÁN (F9)
+                    </button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- MODAL: CHI TIẾT ĐƠN HÀNG -->
@@ -598,37 +859,33 @@
 
         // 3. Logic điều hướng màn hình an toàn
         function switchView(viewName) {
-            const viewIds = ['view-dashboard', 'view-report', 'view-orders'];
+            const viewIds = ['view-dashboard', 'view-report', 'view-orders', 'view-pos'];
             
             // Tắt toàn bộ màn hình (nếu có nội dung tương ứng)
             viewIds.forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.classList.add('hidden');
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.add('opacity-0');
+                }
             });
 
-            // Tắt màu xanh của TẤT CẢ các mục sidebar
-            document.querySelectorAll('.sidebar-item').forEach(el => {
-                el.classList.remove('sidebar-active', 'text-white');
-                el.classList.add('text-gray-600');
-                // Reset icon color
-                const icon = el.querySelector('i');
-                if (icon) icon.classList.add('text-gray-400');
+            // Tắt active của menu mới
+            document.querySelectorAll('.kiki2-menu-item').forEach(el => {
+                el.classList.remove('kiki2-active');
             });
 
-            // Bật màu xanh cho mục được chọn
+            // Bật active cho mục được chọn
             const activeMenu = document.getElementById('menu-' + viewName);
             if (activeMenu) {
-                activeMenu.classList.add('sidebar-active', 'text-white');
-                activeMenu.classList.remove('text-gray-600');
-                const activeIcon = activeMenu.querySelector('i');
-                if (activeIcon) activeIcon.classList.remove('text-gray-400');
+                activeMenu.classList.add('kiki2-active');
             }
 
             // Hiển thị nội dung view (nếu có)
             const targetView = document.getElementById('view-' + viewName);
             if (targetView) {
                 targetView.classList.remove('hidden');
-                setTimeout(() => targetView.style.opacity = '1', 10);
+                setTimeout(() => targetView.classList.remove('opacity-0'), 10);
             }
 
             // Xử lý riêng cho Dashboard & Report Charts
@@ -639,6 +896,104 @@
             else if (viewName === 'report' && !reportChartsLoaded) {
                 initReportCharts();
                 reportChartsLoaded = true;
+            }
+
+            // Đóng sidebar trên mobile sau khi chọn menu
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('kiki2Sidebar');
+                if (sidebar && sidebar.classList.contains('open')) {
+                    toggleSidebar();
+                }
+            }
+        }
+
+        // --- POS & CART LOGIC ---
+        let cart = [];
+
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            renderCart();
+        }
+
+        function updateCartQty(name, delta) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.qty += delta;
+                if (item.qty < 1) {
+                    cart = cart.filter(i => i.name !== name);
+                }
+            }
+            renderCart();
+        }
+
+        function clearCart() {
+            if (cart.length === 0) return;
+            if (confirm('Bạn có chắc chắn muốn xóa tất cả món trong giỏ hàng?')) {
+                cart = [];
+                renderCart();
+            }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const emptyState = document.getElementById('cart-empty');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                if (emptyState) container.appendChild(emptyState);
+                else {
+                    container.innerHTML = `
+                        <div id="cart-empty" class="h-full flex flex-col items-center justify-center text-gray-300 opacity-60">
+                            <i class="fa-solid fa-basket-shopping text-6xl mb-4"></i>
+                            <p class="text-sm font-medium">Chưa có món nào được chọn</p>
+                        </div>
+                    `;
+                }
+                document.getElementById('cart-subtotal').innerText = '0 đ';
+                document.getElementById('cart-total').innerText = '0 đ';
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.qty;
+                const itemEl = document.createElement('div');
+                itemEl.className = 'bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-3';
+                itemEl.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <h4 class="text-[13px] font-bold text-gray-800">${item.name}</h4>
+                        <span class="text-[13px] font-bold text-gray-800">${new Intl.NumberFormat('vi-VN').format(item.price * item.qty)} đ</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-gray-50">
+                        <span class="text-[11px] text-gray-400 font-medium">Giá: ${new Intl.NumberFormat('vi-VN').format(item.price)} đ</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateCartQty('${item.name}', -1)" class="w-7 h-7 flex items-center justify-center rounded-lg border border-gray-100 text-gray-400 hover:text-red-500 hover:border-red-100 transition"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                            <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
+                            <button onclick="updateCartQty('${item.name}', 1)" class="w-7 h-7 flex items-center justify-center rounded-lg border border-gray-100 text-gray-400 hover:text-[#0b5edd] hover:border-blue-100 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemEl);
+            });
+
+            document.getElementById('cart-subtotal').innerText = new Intl.NumberFormat('vi-VN').format(total) + ' đ';
+            document.getElementById('cart-total').innerText = new Intl.NumberFormat('vi-VN').format(total) + ' đ';
+        }
+
+        // --- SIDEBAR TOGGLE LOGIC ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('kiki2Sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
             }
         }
 

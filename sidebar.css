@@ -1,0 +1,307 @@
+/* 
+   Kiki2 POS Sidebar Styles
+   Designed for a modern, premium POS system.
+*/
+
+/* --- Reset & Variables --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+    --kiki2-sidebar-bg: #eef5f9;         /* Light blue/gray requested */
+    --kiki2-bg-hover: #e3edf4;           /* Slightly darker for hover */
+    --kiki2-active-bg: #0056b3;          /* Dark blue active */
+    --kiki2-active-text: #ffffff;
+    --kiki2-inactive-text: #5f6b7a;      /* Gray-blue text */
+    --kiki2-dark-text: #2c3e50;
+    --kiki2-light-gray: #94a3b8;
+    --kiki2-danger: #d32f2f;             /* Red logout */
+    --kiki2-danger-light: #fff1f1;
+    
+    --kiki2-sidebar-width: 260px;
+    --kiki2-border-radius: 10px;
+    --kiki2-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Sidebar Layout --- */
+.kiki2-sidebar {
+    width: var(--kiki2-sidebar-width);
+    height: 100vh;
+    background-color: var(--kiki2-sidebar-bg);
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+}
+
+/* --- Header Section --- */
+.kiki2-sidebar-header {
+    margin-bottom: 30px;
+    padding: 0 8px;
+}
+
+.kiki2-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--kiki2-active-bg);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.kiki2-logo i {
+    font-size: 1.5rem;
+}
+
+.kiki2-store-name {
+    color: var(--kiki2-dark-text);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* --- Navigation Menu (Scrollable area) --- */
+.kiki2-sidebar-menu {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 2px;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.kiki2-sidebar-menu::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for Firefox and IE/Edge */
+.kiki2-sidebar-menu {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.kiki2-menu-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.kiki2-menu-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--kiki2-border-radius);
+    color: var(--kiki2-inactive-text);
+    font-size: 15px;
+    font-weight: 500;
+    transition: var(--kiki2-transition);
+}
+
+.kiki2-menu-item i {
+    font-size: 1.25rem;
+}
+
+/* Active State Styles */
+.kiki2-menu-item.kiki2-active a {
+    background-color: var(--kiki2-active-bg);
+    color: var(--kiki2-active-text);
+    box-shadow: 0 4px 10px rgba(0, 86, 179, 0.2);
+}
+
+/* Hover State Styles (Only for Inactive) */
+.kiki2-menu-item:not(.kiki2-active) a:hover {
+    background-color: var(--kiki2-bg-hover);
+    color: var(--kiki2-dark-text);
+}
+
+/* --- Footer Section --- */
+.kiki2-sidebar-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* User Profile Card */
+.kiki2-user-profile {
+    background-color: var(--kiki2-bg-hover);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.kiki2-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--kiki2-active-bg);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.kiki2-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.kiki2-user-name {
+    color: var(--kiki2-dark-text);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.kiki2-user-role {
+    color: var(--kiki2-light-gray);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Logout Button */
+.kiki2-logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: none;
+    background: transparent;
+    color: var(--kiki2-danger);
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: var(--kiki2-border-radius);
+    cursor: pointer;
+    transition: var(--kiki2-transition);
+}
+
+.kiki2-logout-btn i {
+    font-size: 1.25rem;
+}
+
+.kiki2-logout-btn:hover {
+    background-color: var(--kiki2-danger-light);
+}
+
+/* --- Main Content Area --- */
+.kiki2-content {
+    margin-left: var(--kiki2-sidebar-width);
+    padding: 40px;
+    background-color: #ffffff;
+    min-height: 100vh;
+    transition: var(--kiki2-transition);
+}
+
+/* --- Mobile Header (Hidden on Desktop) --- */
+.kiki2-mobile-header {
+    display: none;
+    height: 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 0 20px;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.kiki2-hamburger-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--kiki2-dark-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.kiki2-mobile-store-name {
+    font-weight: 700;
+    color: var(--kiki2-primary);
+}
+
+/* --- Overlay --- */
+.kiki2-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--kiki2-transition);
+}
+
+.kiki2-sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- Responsive Adjustments (< 768px) --- */
+@media (max-width: 768px) {
+    .kiki2-sidebar {
+        transform: translateX(-100%);
+        box-shadow: 20px 0 50px rgba(0,0,0,0.1);
+        z-index: 1001;
+    }
+
+    .kiki2-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .kiki2-content {
+        margin-left: 0 !important;
+        padding: 20px !important;
+    }
+
+    .kiki2-mobile-header {
+        display: flex;
+    }
+
+    /* Touch Optimization */
+    .kiki2-menu-item a {
+        padding: 16px 18px; /* Tăng diện tích chạm */
+        font-size: 16px;
+    }
+
+    .kiki2-logout-btn {
+        padding: 16px 18px;
+    }
+
+    .kiki2-sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .kiki2-close-sidebar {
+        display: block !important;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--kiki2-text-inactive);
+    }
+}
+
+.kiki2-close-sidebar {
+    display: none;
+}
