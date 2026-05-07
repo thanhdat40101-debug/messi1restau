@@ -926,27 +926,46 @@
                                     <button class="w-full mt-6 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Test In Tem</button>
                                 </div>
                             </div>
-                            <div class="bg-gray-100 rounded-3xl p-8 flex flex-col items-center justify-center gap-6 min-h-[400px]">
+                            <div class="bg-blue-50/50 rounded-3xl p-8 flex flex-col items-center justify-center gap-6 min-h-[400px]">
                                 <div id="sticker-preview-container" class="flex flex-col gap-4 transition-all duration-300">
+                                    <!-- Sticker Mockup 1 -->
                                     <div class="kiki2-sticker-preview" id="sticker-mockup">
-                                        <div class="flex justify-between items-start mb-1">
-                                            <span id="sticker-preview-stt" class="font-bold text-[14px]">#08</span>
-                                            <span id="sticker-preview-time" class="text-[9px]">14:20</span>
+                                        <!-- Section 1: Header -->
+                                        <div class="kiki2-sticker-section">
+                                            <span id="sticker-preview-stt" class="text-xl font-black">#42</span>
+                                            <span class="bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-tighter">Mang về</span>
                                         </div>
-                                        <p class="font-bold text-[12px]">Cà phê sữa đá</p>
-                                        <p id="sticker-preview-options" class="text-[10px] text-gray-500 mt-1">- Size L, Ít đường</p>
-                                        <p id="sticker-preview-customer" class="text-[9px] text-blue-600 font-bold mt-1 hidden">Khách: Anh Tuấn</p>
+                                        <!-- Section 2: Details -->
+                                        <div class="kiki2-sticker-section py-2">
+                                            <p class="font-bold text-[13px] text-black">Cà phê sữa đá</p>
+                                            <p id="sticker-preview-options" class="text-[10px] text-gray-600 mt-0.5 font-medium">Size L • Ít đường • Ít đá</p>
+                                        </div>
+                                        <!-- Section 3: Footer -->
+                                        <div class="kiki2-sticker-section border-none pt-2">
+                                            <span id="sticker-preview-customer" class="text-[9px] text-gray-500 font-medium">Nguyễn Văn A</span>
+                                            <span id="sticker-preview-time" class="text-[9px] text-gray-500">14:25</span>
+                                        </div>
                                     </div>
-                                    <div class="kiki2-sticker-preview opacity-50 scale-95">
-                                        <div class="flex justify-between items-start mb-1">
-                                            <span class="font-bold text-[14px]">#08</span>
-                                            <span class="text-[9px]">14:20</span>
+
+                                    <!-- Sticker Mockup 2 (Visual reference) -->
+                                    <div class="kiki2-sticker-preview opacity-60 scale-95">
+                                        <div class="kiki2-sticker-section">
+                                            <span class="text-xl font-black">#42</span>
+                                            <span class="bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-tighter">Mang về</span>
                                         </div>
-                                        <p class="font-bold text-[12px]">Trà đào cam sả</p>
-                                        <p class="text-[10px] text-gray-500 mt-1">- No Ice, Less Sugar</p>
+                                        <div class="kiki2-sticker-section py-2">
+                                            <p class="font-bold text-[13px] text-black">Trà đào cam sả</p>
+                                            <p class="text-[10px] text-gray-600 mt-0.5 font-medium">Size M • Bình thường</p>
+                                        </div>
+                                        <div class="kiki2-sticker-section border-none pt-2">
+                                            <span class="text-[9px] text-gray-500 font-medium">Nguyễn Văn A</span>
+                                            <span class="text-[9px] text-gray-500">14:25</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <p class="text-[10px] text-gray-400 font-medium italic">Mô phỏng kích thước thực tế</p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
+                                    <i class="ph-bold ph-eye"></i> Xem trước tem Live
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -1613,7 +1632,7 @@
         function showToast(message) {
             const toast = document.getElementById('kiki2-toast');
             if (toast) {
-                toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-xl"></i> <span>${message}</span>`;
+                toast.innerHTML = `<i class="ph-fill ph-check-circle text-white text-lg"></i> <span>${message}</span>`;
                 toast.classList.add('show');
                 setTimeout(() => toast.classList.remove('show'), 3000);
             }
