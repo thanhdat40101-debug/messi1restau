@@ -657,16 +657,16 @@
         <!-- VIEW 5: CẤU HÌNH IN ẤN -->
         <div id="view-print-config" class="hidden h-full overflow-y-auto flex flex-col w-full absolute inset-0 bg-[#f4f6f8] transition-opacity duration-300">
             <!-- Header -->
-            <header class="bg-white px-8 py-5 flex justify-between items-center border-b border-gray-200 sticky top-0 z-10">
+            <header class="bg-white px-6 py-4 flex justify-between items-center border-b border-gray-200 sticky top-0 z-10">
                 <div>
-                    <h1 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+                    <h1 class="text-lg font-bold text-gray-800 flex items-center gap-3">
                         <i class="ph-bold ph-printer text-blue-600"></i>
                         Cấu Hình In Ấn
                     </h1>
-                    <p class="text-xs text-gray-500 mt-1">Thiết lập máy in và tùy chỉnh mẫu hóa đơn, tem dán.</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">Thiết lập máy in và tùy chỉnh mẫu hóa đơn, tem dán.</p>
                 </div>
-                <button class="bg-[#0056b3] hover:bg-blue-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-md transition-all active:scale-95">
-                    Lưu cấu hình
+                <button onclick="savePrintConfig()" class="bg-[#0056b3] hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-2">
+                    <i class="ph ph-floppy-disk"></i> Lưu cấu hình
                 </button>
             </header>
 
@@ -684,30 +684,30 @@
                     <!-- [TAB 1: Máy In] -->
                     <div id="print-tab-printer" class="print-tab-panel">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="kiki2-config-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-                                <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                            <div class="kiki2-config-card bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                                <h3 class="font-bold text-gray-800 flex items-center gap-2 text-sm">
                                     <i class="ph ph-gear text-blue-500"></i> Thiết lập máy in
                                 </h3>
-                                <div class="space-y-4">
+                                <div class="space-y-3">
                                     <div>
-                                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Máy in hóa đơn</label>
+                                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Máy in hóa đơn</label>
                                         <div class="flex gap-2">
-                                            <input type="text" value="Xprinter XP-N160I" class="kiki2-input flex-1" placeholder="Tên máy in...">
-                                            <button class="kiki2-btn-outline px-4 py-2 text-xs">Test In</button>
+                                            <input id="printer-invoice-name" type="text" value="Xprinter XP-N160I" class="kiki2-input flex-1 py-2.5 text-xs" placeholder="Tên máy in...">
+                                            <button class="kiki2-btn-outline px-3 py-2 text-[10px]">Test In</button>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Máy in tem</label>
+                                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Máy in tem</label>
                                         <div class="flex gap-2">
-                                            <input type="text" value="Gprinter GP-2120TU" class="kiki2-input flex-1" placeholder="Tên máy in...">
-                                            <button class="kiki2-btn-outline px-4 py-2 text-xs">Test In</button>
+                                            <input id="printer-label-name" type="text" value="Gprinter GP-2120TU" class="kiki2-input flex-1 py-2.5 text-xs" placeholder="Tên máy in...">
+                                            <button class="kiki2-btn-outline px-3 py-2 text-[10px]">Test In</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-between pt-4 border-t border-gray-50">
-                                    <span class="text-sm font-medium text-gray-700">In tự động (không hộp thoại)</span>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-50">
+                                    <span class="text-xs font-medium text-gray-600">In tự động (không hộp thoại)</span>
                                     <label class="kiki2-toggle">
-                                        <input type="checkbox" checked>
+                                        <input id="printer-auto-print" type="checkbox" checked>
                                         <span class="kiki2-slider"></span>
                                     </label>
                                 </div>
@@ -736,56 +736,152 @@
                     </div>
 
                     <!-- [TAB 2: Hóa Đơn] -->
-                    <div id="print-tab-invoice" class="print-tab-panel hidden">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="space-y-6">
-                                <div class="kiki2-config-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                                    <h3 class="font-bold text-gray-800 mb-6">Cấu hình hóa đơn</h3>
-                                    <div class="space-y-5">
-                                        <div>
-                                            <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Khổ giấy</label>
-                                            <div class="flex gap-3">
-                                                <button class="kiki2-size-btn active">K58 (58mm)</button>
-                                                <button class="kiki2-size-btn">K80 (80mm)</button>
-                                            </div>
-                                        </div>
-                                        <div class="kiki2-option-row">
-                                            <span>Hiển thị Logo cửa hàng</span>
-                                            <label class="kiki2-toggle"><input type="checkbox" checked><span class="kiki2-slider"></span></label>
-                                        </div>
-                                        <div class="kiki2-option-row">
-                                            <span>Mã QR Thanh toán</span>
-                                            <label class="kiki2-toggle"><input type="checkbox" checked><span class="kiki2-slider"></span></label>
-                                        </div>
-                                        <div class="kiki2-option-row">
-                                            <span>Hiển thị Mật khẩu WiFi</span>
-                                            <label class="kiki2-toggle"><input type="checkbox"><span class="kiki2-slider"></span></label>
-                                        </div>
-                                        <div class="space-y-3 pt-2">
-                                            <input type="text" class="kiki2-input w-full" placeholder="Header: Cảm ơn quý khách...">
-                                            <input type="text" class="kiki2-input w-full" placeholder="Footer: Hẹn gặp lại quý khách!">
+                    <div id="print-tab-invoice" class="print-tab-panel hidden h-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-full">
+                            <!-- Left: Settings -->
+                            <div class="lg:col-span-7 space-y-5">
+                                <div class="bg-white p-6 rounded-[32px] shadow-sm border border-gray-100 space-y-6">
+                                    <h3 class="text-lg font-bold text-gray-800">Cấu hình hóa đơn</h3>
+                                    
+                                    <!-- Paper Size Selection -->
+                                    <div class="space-y-3">
+                                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">KHỔ GIẤY</label>
+                                        <div class="flex items-center gap-3">
+                                            <button id="btn-size-58" class="flex-1 py-2.5 px-4 border-2 border-[#28a745] bg-[#28a745] text-white rounded-xl font-bold transition-all" onclick="setPaperSize('58')">58mm</button>
+                                            <button id="btn-size-80" class="flex-1 py-2.5 px-4 border-2 border-gray-100 bg-white text-gray-500 rounded-xl font-bold transition-all hover:border-gray-200" onclick="setPaperSize('80')">80mm</button>
                                         </div>
                                     </div>
-                                    <button class="w-full mt-6 bg-gray-800 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
-                                        <i class="ph ph-printer"></i> Test In Hóa Đơn
+
+                                    <!-- Display Options -->
+                                    <div class="space-y-2">
+                                        <!-- Logo -->
+                                        <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
+                                            <div>
+                                                <p class="font-bold text-gray-800 text-xs">Hiển thị Logo</p>
+                                                <p class="text-[10px] text-gray-500">Logo cửa hàng trên đầu hóa đơn</p>
+                                            </div>
+                                            <label class="kiki2-toggle">
+                                                <input id="invoice-logo-toggle" type="checkbox" checked onchange="togglePreview('logo', this.checked)">
+                                                <span class="kiki2-slider"></span>
+                                            </label>
+                                        </div>
+                                        <!-- QR -->
+                                        <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
+                                            <div>
+                                                <p class="font-bold text-gray-800 text-xs">Mã QR Thanh toán</p>
+                                                <p class="text-[10px] text-gray-500">QR code chuyển khoản</p>
+                                            </div>
+                                            <label class="kiki2-toggle">
+                                                <input id="invoice-qr-toggle" type="checkbox" checked onchange="togglePreview('qr', this.checked)">
+                                                <span class="kiki2-slider"></span>
+                                            </label>
+                                        </div>
+                                        <!-- WiFi -->
+                                        <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
+                                            <div>
+                                                <p class="font-bold text-gray-800 text-xs">Mật khẩu WiFi</p>
+                                                <p class="text-[10px] text-gray-500">Hiện WiFi password cho khách</p>
+                                            </div>
+                                            <label class="kiki2-toggle">
+                                                <input id="invoice-wifi-toggle" type="checkbox" checked onchange="togglePreview('wifi', this.checked)">
+                                                <span class="kiki2-slider"></span>
+                                            </label>
+                                        </div>
+                                        <!-- MST -->
+                                        <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
+                                            <div>
+                                                <p class="font-bold text-gray-800 text-xs">Mã số thuế</p>
+                                                <p class="text-[10px] text-gray-500">MST cửa hàng</p>
+                                            </div>
+                                            <label class="kiki2-toggle">
+                                                <input id="invoice-mst-toggle" type="checkbox" checked onchange="togglePreview('mst', this.checked)">
+                                                <span class="kiki2-slider"></span>
+                                            </label>
+                                        </div>
+                                        <!-- Footer Note -->
+                                        <div class="p-4 bg-[#ebf3f9] rounded-2xl border border-blue-50 flex items-center justify-between">
+                                            <div>
+                                                <p class="font-bold text-gray-800 text-xs">Ghi chú cuối</p>
+                                                <p class="text-[10px] text-gray-500">Lời cảm ơn / thông tin thêm</p>
+                                            </div>
+                                            <label class="kiki2-toggle">
+                                                <input id="invoice-footer-note-toggle" type="checkbox" checked onchange="togglePreview('footer-note', this.checked)">
+                                                <span class="kiki2-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Custom Inputs -->
+                                    <div class="space-y-4">
+                                        <div class="space-y-1.5">
+                                            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">HEADER TUỲ CHỈNH</label>
+                                            <input id="invoice-header-text" type="text" class="w-full p-3 bg-[#ebf3f9] border border-transparent rounded-xl outline-none focus:border-blue-400 text-xs" placeholder="VD: Chào mừng đến AiPOS">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">FOOTER TUỲ CHỈNH</label>
+                                            <input id="invoice-footer-text" type="text" class="w-full p-3 bg-[#ebf3f9] border border-transparent rounded-xl outline-none focus:border-blue-400 text-xs" placeholder="Cảm ơn quý khách!">
+                                        </div>
+                                    </div>
+
+                                    <button class="flex items-center gap-2 px-5 py-2.5 border-2 border-[#28a745] text-[#28a745] rounded-xl font-bold transition-all hover:bg-green-50 text-xs">
+                                        <i class="ph ph-note-pencil"></i> Test In Hóa Đơn
                                     </button>
                                 </div>
                             </div>
-                            <div class="bg-gray-100 rounded-3xl p-8 flex justify-center">
-                                <div class="kiki2-bill-preview shadow-xl">
-                                    <div class="text-center border-b border-dashed border-gray-300 pb-4 mb-4">
-                                        <div class="w-12 h-12 bg-gray-200 rounded-full mx-auto mb-2 flex items-center justify-center"><i class="ph ph-image"></i></div>
-                                        <h4 class="font-bold text-lg">AIPOS COFFEE</h4>
-                                        <p class="text-[10px] text-gray-500">123 Đường ABC, Quận 1, TP.HCM</p>
+
+                            <!-- Right: LIVE Preview -->
+                            <div class="lg:col-span-5">
+                                <div class="bg-[#ebf3f9] rounded-[40px] p-10 flex flex-col h-full min-h-[600px]">
+                                    <div class="flex items-center gap-2 mb-8">
+                                        <i class="ph ph-eye text-[#0056b3]"></i>
+                                        <span class="font-bold text-gray-700 text-sm">Xem trước hóa đơn</span>
+                                        <span class="bg-[#0056b3]/10 text-[#0056b3] text-[9px] px-2 py-0.5 rounded font-black tracking-widest uppercase">LIVE</span>
                                     </div>
-                                    <div class="text-[11px] space-y-2 border-b border-dashed border-gray-300 pb-4 mb-4">
-                                        <div class="flex justify-between"><span>Bạc xỉu đá</span><span>29,000</span></div>
-                                        <div class="flex justify-between"><span>Trà đào cam sả</span><span>45,000</span></div>
-                                        <div class="flex justify-between font-bold text-[13px] pt-2"><span>TỔNG CỘNG</span><span>74,000</span></div>
-                                    </div>
-                                    <div class="text-center space-y-2">
-                                        <div class="w-20 h-20 bg-gray-100 mx-auto rounded border border-gray-200 flex items-center justify-center text-[8px] text-gray-400 italic">QR CODE</div>
-                                        <p class="text-[9px] text-gray-400">Cảm ơn quý khách!</p>
+                                    
+                                    <div class="flex-1 flex items-start justify-center">
+                                        <div id="invoice-mockup" class="w-[280px] bg-white shadow-2xl p-8 rounded-[4px] space-y-6 transition-all duration-300">
+                                            <!-- Logo Placeholder -->
+                                            <div id="preview-logo" class="flex justify-center">
+                                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-300 font-bold text-[10px]">LOGO</div>
+                                            </div>
+
+                                            <div class="text-center space-y-1">
+                                                <h4 class="font-black text-xl text-gray-800">AIPOS COFFEE</h4>
+                                                <p class="text-[10px] text-gray-500">123 Nguyễn Huệ, Q.1, TP.HCM</p>
+                                            </div>
+
+                                            <div class="border-b border-dashed border-gray-200 pb-4">
+                                                <h5 class="text-center font-black text-xs mb-4">HÓA ĐƠN BÁN HÀNG</h5>
+                                                <div class="text-[10px] space-y-1">
+                                                    <div class="flex justify-between text-gray-500 font-medium"><span>Ngày: 11/04/2026</span><span>14:25</span></div>
+                                                    <div class="flex justify-between text-gray-500 font-medium"><span>Thu ngân: Cashier 1</span></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="border-b border-dashed border-gray-200 pb-4 space-y-2">
+                                                <div class="flex justify-between text-[11px] font-medium text-gray-700"><span>2x Cà phê sữa đá</span><span>58.000</span></div>
+                                                <div class="flex justify-between text-[11px] font-medium text-gray-700"><span>1x Trà đào cam sả</span><span>39.000</span></div>
+                                                <div class="flex justify-between text-[11px] font-medium text-gray-700"><span>1x Bánh mì bơ tỏi</span><span>25.000</span></div>
+                                            </div>
+
+                                            <div class="space-y-1 pb-4">
+                                                <div class="flex justify-between items-end">
+                                                    <span class="text-sm font-black text-gray-800">TỔNG</span>
+                                                    <span class="text-lg font-black text-gray-800">122.000đ</span>
+                                                </div>
+                                                <div class="flex justify-between text-[10px] text-gray-500 font-medium"><span>Tiền khách:</span><span>150.000đ</span></div>
+                                                <div class="flex justify-between text-[10px] text-gray-500 font-medium"><span>Tiền thừa:</span><span>28.000đ</span></div>
+                                            </div>
+
+                                            <div class="text-center space-y-3 pt-4">
+                                                <div id="preview-mst" class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">MST: 0123456789</div>
+                                                <div id="preview-wifi" class="text-[9px] text-gray-400 font-bold">WiFi: aipos_guest / 12345678</div>
+                                                
+                                                <div id="preview-qr" class="w-24 h-24 bg-gray-50 border border-gray-100 mx-auto rounded flex items-center justify-center text-[8px] text-gray-300 font-bold tracking-widest">QR CODE</div>
+                                                
+                                                <p id="preview-footer-note" class="text-[10px] text-gray-400 italic">Cảm ơn quý khách!</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1424,8 +1520,102 @@
             }
         }
 
-        // --- PRINT CONFIG TABS ---
+        // --- PRINT CONFIG PERSISTENCE ---
+        let currentPaperSize = '58';
+        let currentPrintTab = 'printer';
+
+        function savePrintConfig() {
+            const config = {
+                currentPrintTab: currentPrintTab,
+                currentPaperSize: currentPaperSize,
+                printerInvoiceName: document.getElementById('printer-invoice-name')?.value || '',
+                printerLabelName: document.getElementById('printer-label-name')?.value || '',
+                printerAutoPrint: document.getElementById('printer-auto-print')?.checked || false,
+                invoiceLogo: document.getElementById('invoice-logo-toggle')?.checked || false,
+                invoiceQr: document.getElementById('invoice-qr-toggle')?.checked || false,
+                invoiceWifi: document.getElementById('invoice-wifi-toggle')?.checked || false,
+                invoiceMst: document.getElementById('invoice-mst-toggle')?.checked || false,
+                invoiceFooterNote: document.getElementById('invoice-footer-note-toggle')?.checked || false,
+                invoiceHeader: document.getElementById('invoice-header-text')?.value || '',
+                invoiceFooter: document.getElementById('invoice-footer-text')?.value || ''
+            };
+            localStorage.setItem('kiki2_print_config', JSON.stringify(config));
+            showToast("Bạn đã lưu cấu hình in thành công");
+        }
+
+        function loadPrintConfig() {
+            const saved = localStorage.getItem('kiki2_print_config');
+            if (!saved) return;
+            const config = JSON.parse(saved);
+
+            if (document.getElementById('printer-invoice-name')) document.getElementById('printer-invoice-name').value = config.printerInvoiceName;
+            if (document.getElementById('printer-label-name')) document.getElementById('printer-label-name').value = config.printerLabelName;
+            if (document.getElementById('printer-auto-print')) document.getElementById('printer-auto-print').checked = config.printerAutoPrint;
+
+            if (document.getElementById('invoice-logo-toggle')) document.getElementById('invoice-logo-toggle').checked = config.invoiceLogo;
+            if (document.getElementById('invoice-qr-toggle')) document.getElementById('invoice-qr-toggle').checked = config.invoiceQr;
+            if (document.getElementById('invoice-wifi-toggle')) document.getElementById('invoice-wifi-toggle').checked = config.invoiceWifi;
+            if (document.getElementById('invoice-mst-toggle')) document.getElementById('invoice-mst-toggle').checked = config.invoiceMst;
+            if (document.getElementById('invoice-footer-note-toggle')) document.getElementById('invoice-footer-note-toggle').checked = config.invoiceFooterNote;
+            if (document.getElementById('invoice-header-text')) document.getElementById('invoice-header-text').value = config.invoiceHeader;
+            if (document.getElementById('invoice-footer-text')) document.getElementById('invoice-footer-text').value = config.invoiceFooter;
+
+            togglePreview('logo', config.invoiceLogo);
+            togglePreview('qr', config.invoiceQr);
+            togglePreview('wifi', config.invoiceWifi);
+            togglePreview('mst', config.invoiceMst);
+            togglePreview('footer-note', config.invoiceFooterNote);
+
+            setPaperSize(config.currentPaperSize);
+            switchPrintTab(config.currentPrintTab);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('kiki2-toast');
+            if (toast) {
+                toast.innerText = message;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+        }
+
+        // --- PRINT CONFIG LOGIC ---
+        function setPaperSize(size) {
+            currentPaperSize = size;
+            const btn58 = document.getElementById('btn-size-58');
+            const btn80 = document.getElementById('btn-size-80');
+            const mockup = document.getElementById('invoice-mockup');
+
+            if (!btn58 || !btn80 || !mockup) return;
+
+            if (size === '58') {
+                btn58.className = 'flex-1 py-2.5 px-4 bg-[#28a745] border-2 border-[#28a745] text-white rounded-xl font-bold transition-all';
+                btn80.className = 'flex-1 py-2.5 px-4 bg-white border-2 border-gray-100 text-gray-500 rounded-xl font-bold transition-all hover:border-gray-200';
+                mockup.style.width = '240px';
+                mockup.style.padding = '1.25rem';
+            } else {
+                btn80.className = 'flex-1 py-2.5 px-4 bg-[#28a745] border-2 border-[#28a745] text-white rounded-xl font-bold transition-all';
+                btn58.className = 'flex-1 py-2.5 px-4 bg-white border-2 border-gray-100 text-gray-500 rounded-xl font-bold transition-all hover:border-gray-200';
+                mockup.style.width = '320px';
+                mockup.style.padding = '2rem';
+            }
+        }
+
+        function togglePreview(elementId, isVisible) {
+            const el = document.getElementById('preview-' + elementId);
+            if (el) {
+                if (isVisible) {
+                    el.classList.remove('hidden');
+                    el.style.opacity = '1';
+                } else {
+                    el.style.opacity = '0';
+                    setTimeout(() => el.classList.add('hidden'), 300);
+                }
+            }
+        }
+
         function switchPrintTab(tabName) {
+            currentPrintTab = tabName;
             const tabs = document.querySelectorAll('.kiki2-tab-btn');
             tabs.forEach(btn => btn.classList.remove('active'));
             
@@ -1438,10 +1628,12 @@
             const targetPanel = document.getElementById('print-tab-' + tabName);
             if (targetPanel) {
                 targetPanel.classList.remove('hidden');
-                targetPanel.style.opacity = '0';
-                setTimeout(() => targetPanel.style.opacity = '1', 50);
             }
         }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', loadPrintConfig);
     </script>
+    <div id="kiki2-toast"></div>
 </body>
 </html>
