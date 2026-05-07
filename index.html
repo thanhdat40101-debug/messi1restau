@@ -56,7 +56,7 @@
 
         /* --- Responsive Grid & Table Adjustments --- */
         @media (max-width: 768px) {
-            .grid-cols-4 { grid-cols-2 !important; }
+            .grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
             .md\:grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
             .lg\:grid-cols-3 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
             .md\:grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
@@ -72,6 +72,23 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
                 gap: 12px !important;
             }
+        }
+
+        /* --- Aggressive Toggle Enforcement (Fixes Mobile Checkbox Issue) --- */
+        .kiki2-toggle input[type="checkbox"] {
+            position: absolute !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            pointer-events: none !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            display: none !important; /* Some browsers need this even with opacity 0 */
+        }
+        .kiki2-toggle input[type="checkbox"] + .kiki2-slider {
+            display: block !important;
+            visibility: visible !important;
         }
 
         @media (max-width: 480px) {
@@ -894,10 +911,16 @@
                             <div class="space-y-6">
                                 <div class="kiki2-config-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                                     <div class="flex items-center justify-between bg-blue-50 p-4 rounded-xl mb-6">
-                                        <span class="font-bold text-blue-700">Bật in tem khi hoàn tất món</span>
-                                        <label class="kiki2-toggle"><input id="sticker-auto-print" type="checkbox" checked><span class="kiki2-slider"></span></label>
+                                        <div>
+                                            <span class="font-bold text-blue-700 block">Bật in tem khi hoàn tất món</span>
+                                            <p class="text-[10px] text-blue-500 font-medium">Tự động in tem khi đơn mang về thanh toán</p>
+                                        </div>
+                                        <label class="kiki2-toggle">
+                                            <input id="sticker-auto-print" type="checkbox" checked onchange="handleMasterStickerToggle(this.checked)">
+                                            <span class="kiki2-slider"></span>
+                                        </label>
                                     </div>
-                                    <div class="space-y-5">
+                                    <div id="sticker-options-container" class="space-y-5 transition-all duration-300">
                                         <div>
                                             <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Kích thước tem</label>
                                             <div class="flex flex-wrap gap-2">
@@ -922,8 +945,8 @@
                                             <span>Thời gian in</span>
                                             <label class="kiki2-toggle"><input id="sticker-time-toggle" type="checkbox" checked onchange="toggleStickerPreview('time', this.checked)"><span class="kiki2-slider"></span></label>
                                         </div>
+                                        <button class="w-full mt-2 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">Test In Tem</button>
                                     </div>
-                                    <button class="w-full mt-6 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Test In Tem</button>
                                 </div>
                             </div>
                             <div class="bg-blue-50/50 rounded-3xl p-8 flex flex-col items-center justify-center gap-6 min-h-[400px]">
@@ -1625,8 +1648,20 @@
             toggleStickerPreview('customer', config.stickerCustomer);
             toggleStickerPreview('time', config.stickerTime);
             setStickerSize(config.currentStickerSize || '4030');
+            handleMasterStickerToggle(config.stickerAutoPrint);
 
             switchPrintTab(config.currentPrintTab);
+        }
+
+        function handleMasterStickerToggle(isOn) {
+            const container = document.getElementById('sticker-options-container');
+            if (container) {
+                if (isOn) {
+                    container.classList.remove('kiki2-disabled');
+                } else {
+                    container.classList.add('kiki2-disabled');
+                }
+            }
         }
 
         function showToast(message) {
