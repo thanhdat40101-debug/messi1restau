@@ -672,7 +672,7 @@
 
             <div class="p-6 max-w-[1200px] mx-auto w-full space-y-6">
                 <!-- Tabs Navigation -->
-                <div class="kiki2-print-tabs flex gap-2 p-1 bg-gray-200/50 rounded-xl w-fit">
+                <div class="kiki2-print-tabs">
                     <button class="kiki2-tab-btn active" onclick="switchPrintTab('printer')">Máy In</button>
                     <button class="kiki2-tab-btn" onclick="switchPrintTab('invoice')">Hóa Đơn</button>
                     <button class="kiki2-tab-btn" onclick="switchPrintTab('label')">Tem Mang Về</button>
@@ -895,41 +895,58 @@
                                 <div class="kiki2-config-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                                     <div class="flex items-center justify-between bg-blue-50 p-4 rounded-xl mb-6">
                                         <span class="font-bold text-blue-700">Bật in tem khi hoàn tất món</span>
-                                        <label class="kiki2-toggle"><input type="checkbox" checked><span class="kiki2-slider"></span></label>
+                                        <label class="kiki2-toggle"><input id="sticker-auto-print" type="checkbox" checked><span class="kiki2-slider"></span></label>
                                     </div>
                                     <div class="space-y-5">
                                         <div>
                                             <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Kích thước tem</label>
                                             <div class="flex flex-wrap gap-2">
-                                                <button class="kiki2-size-btn active">40x30mm</button>
-                                                <button class="kiki2-size-btn">50x30mm</button>
-                                                <button class="kiki2-size-btn">50x40mm</button>
+                                                <button id="btn-sticker-4030" onclick="setStickerSize('4030')" class="kiki2-size-btn active">40x30mm</button>
+                                                <button id="btn-sticker-5030" onclick="setStickerSize('5030')" class="kiki2-size-btn">50x30mm</button>
+                                                <button id="btn-sticker-5040" onclick="setStickerSize('5040')" class="kiki2-size-btn">50x40mm</button>
                                             </div>
                                         </div>
-                                        <div class="kiki2-option-row"><span>In số thứ tự (#STT)</span><label class="kiki2-toggle"><input type="checkbox" checked><span class="kiki2-slider"></span></label></div>
-                                        <div class="kiki2-option-row"><span>In tùy chọn món (Size, Đá...)</span><label class="kiki2-toggle"><input type="checkbox" checked><span class="kiki2-slider"></span></label></div>
-                                        <div class="kiki2-option-row"><span>Tên khách hàng</span><label class="kiki2-toggle"><input type="checkbox"><span class="kiki2-slider"></span></label></div>
+                                        <div class="kiki2-option-row">
+                                            <span>In số thứ tự (#STT)</span>
+                                            <label class="kiki2-toggle"><input id="sticker-stt-toggle" type="checkbox" checked onchange="toggleStickerPreview('stt', this.checked)"><span class="kiki2-slider"></span></label>
+                                        </div>
+                                        <div class="kiki2-option-row">
+                                            <span>In tùy chọn món (Size, Đá...)</span>
+                                            <label class="kiki2-toggle"><input id="sticker-options-toggle" type="checkbox" checked onchange="toggleStickerPreview('options', this.checked)"><span class="kiki2-slider"></span></label>
+                                        </div>
+                                        <div class="kiki2-option-row">
+                                            <span>Tên khách hàng</span>
+                                            <label class="kiki2-toggle"><input id="sticker-customer-toggle" type="checkbox" onchange="toggleStickerPreview('customer', this.checked)"><span class="kiki2-slider"></span></label>
+                                        </div>
+                                        <div class="kiki2-option-row">
+                                            <span>Thời gian in</span>
+                                            <label class="kiki2-toggle"><input id="sticker-time-toggle" type="checkbox" checked onchange="toggleStickerPreview('time', this.checked)"><span class="kiki2-slider"></span></label>
+                                        </div>
                                     </div>
-                                    <button class="w-full mt-6 bg-blue-600 text-white py-3 rounded-xl font-bold">Test In Tem</button>
+                                    <button class="w-full mt-6 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Test In Tem</button>
                                 </div>
                             </div>
-                            <div class="bg-gray-100 rounded-3xl p-8 flex flex-col items-center gap-4">
-                                <div class="kiki2-sticker-preview">
-                                    <div class="flex justify-between items-start mb-1">
-                                        <span class="font-bold text-[14px]">#08</span>
-                                        <span class="text-[9px]">14:20</span>
+                            <div class="bg-gray-100 rounded-3xl p-8 flex flex-col items-center justify-center gap-6 min-h-[400px]">
+                                <div id="sticker-preview-container" class="flex flex-col gap-4 transition-all duration-300">
+                                    <div class="kiki2-sticker-preview" id="sticker-mockup">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <span id="sticker-preview-stt" class="font-bold text-[14px]">#08</span>
+                                            <span id="sticker-preview-time" class="text-[9px]">14:20</span>
+                                        </div>
+                                        <p class="font-bold text-[12px]">Cà phê sữa đá</p>
+                                        <p id="sticker-preview-options" class="text-[10px] text-gray-500 mt-1">- Size L, Ít đường</p>
+                                        <p id="sticker-preview-customer" class="text-[9px] text-blue-600 font-bold mt-1 hidden">Khách: Anh Tuấn</p>
                                     </div>
-                                    <p class="font-bold text-[12px]">Cà phê sữa đá</p>
-                                    <p class="text-[10px] text-gray-500 mt-1">- Size L, Ít đường</p>
-                                </div>
-                                <div class="kiki2-sticker-preview">
-                                    <div class="flex justify-between items-start mb-1">
-                                        <span class="font-bold text-[14px]">#08</span>
-                                        <span class="text-[9px]">14:20</span>
+                                    <div class="kiki2-sticker-preview opacity-50 scale-95">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <span class="font-bold text-[14px]">#08</span>
+                                            <span class="text-[9px]">14:20</span>
+                                        </div>
+                                        <p class="font-bold text-[12px]">Trà đào cam sả</p>
+                                        <p class="text-[10px] text-gray-500 mt-1">- No Ice, Less Sugar</p>
                                     </div>
-                                    <p class="font-bold text-[12px]">Trà đào cam sả</p>
-                                    <p class="text-[10px] text-gray-500 mt-1">- No Ice, Less Sugar</p>
                                 </div>
+                                <p class="text-[10px] text-gray-400 font-medium italic">Mô phỏng kích thước thực tế</p>
                             </div>
                         </div>
                     </div>
@@ -1522,12 +1539,14 @@
 
         // --- PRINT CONFIG PERSISTENCE ---
         let currentPaperSize = '58';
+        let currentStickerSize = '4030';
         let currentPrintTab = 'printer';
 
         function savePrintConfig() {
             const config = {
                 currentPrintTab: currentPrintTab,
                 currentPaperSize: currentPaperSize,
+                currentStickerSize: currentStickerSize,
                 printerInvoiceName: document.getElementById('printer-invoice-name')?.value || '',
                 printerLabelName: document.getElementById('printer-label-name')?.value || '',
                 printerAutoPrint: document.getElementById('printer-auto-print')?.checked || false,
@@ -1537,7 +1556,12 @@
                 invoiceMst: document.getElementById('invoice-mst-toggle')?.checked || false,
                 invoiceFooterNote: document.getElementById('invoice-footer-note-toggle')?.checked || false,
                 invoiceHeader: document.getElementById('invoice-header-text')?.value || '',
-                invoiceFooter: document.getElementById('invoice-footer-text')?.value || ''
+                invoiceFooter: document.getElementById('invoice-footer-text')?.value || '',
+                stickerAutoPrint: document.getElementById('sticker-auto-print')?.checked || false,
+                stickerStt: document.getElementById('sticker-stt-toggle')?.checked || false,
+                stickerOptions: document.getElementById('sticker-options-toggle')?.checked || false,
+                stickerCustomer: document.getElementById('sticker-customer-toggle')?.checked || false,
+                stickerTime: document.getElementById('sticker-time-toggle')?.checked || false
             };
             localStorage.setItem('kiki2_print_config', JSON.stringify(config));
             showToast("Bạn đã lưu cấu hình in thành công");
@@ -1548,10 +1572,12 @@
             if (!saved) return;
             const config = JSON.parse(saved);
 
+            // Printer Tab
             if (document.getElementById('printer-invoice-name')) document.getElementById('printer-invoice-name').value = config.printerInvoiceName;
             if (document.getElementById('printer-label-name')) document.getElementById('printer-label-name').value = config.printerLabelName;
             if (document.getElementById('printer-auto-print')) document.getElementById('printer-auto-print').checked = config.printerAutoPrint;
 
+            // Invoice Tab
             if (document.getElementById('invoice-logo-toggle')) document.getElementById('invoice-logo-toggle').checked = config.invoiceLogo;
             if (document.getElementById('invoice-qr-toggle')) document.getElementById('invoice-qr-toggle').checked = config.invoiceQr;
             if (document.getElementById('invoice-wifi-toggle')) document.getElementById('invoice-wifi-toggle').checked = config.invoiceWifi;
@@ -1567,13 +1593,27 @@
             togglePreview('footer-note', config.invoiceFooterNote);
 
             setPaperSize(config.currentPaperSize);
+
+            // Sticker Tab
+            if (document.getElementById('sticker-auto-print')) document.getElementById('sticker-auto-print').checked = config.stickerAutoPrint;
+            if (document.getElementById('sticker-stt-toggle')) document.getElementById('sticker-stt-toggle').checked = config.stickerStt;
+            if (document.getElementById('sticker-options-toggle')) document.getElementById('sticker-options-toggle').checked = config.stickerOptions;
+            if (document.getElementById('sticker-customer-toggle')) document.getElementById('sticker-customer-toggle').checked = config.stickerCustomer;
+            if (document.getElementById('sticker-time-toggle')) document.getElementById('sticker-time-toggle').checked = config.stickerTime;
+
+            toggleStickerPreview('stt', config.stickerStt);
+            toggleStickerPreview('options', config.stickerOptions);
+            toggleStickerPreview('customer', config.stickerCustomer);
+            toggleStickerPreview('time', config.stickerTime);
+            setStickerSize(config.currentStickerSize || '4030');
+
             switchPrintTab(config.currentPrintTab);
         }
 
         function showToast(message) {
             const toast = document.getElementById('kiki2-toast');
             if (toast) {
-                toast.innerText = message;
+                toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-xl"></i> <span>${message}</span>`;
                 toast.classList.add('show');
                 setTimeout(() => toast.classList.remove('show'), 3000);
             }
@@ -1601,6 +1641,22 @@
             }
         }
 
+        function setStickerSize(size) {
+            currentStickerSize = size;
+            const sizes = ['4030', '5030', '5040'];
+            sizes.forEach(s => {
+                const btn = document.getElementById('btn-sticker-' + s);
+                if (btn) btn.classList.toggle('active', s === size);
+            });
+
+            const mockup = document.getElementById('sticker-mockup');
+            if (mockup) {
+                if (size === '4030') { mockup.style.width = '180px'; mockup.style.height = '135px'; }
+                else if (size === '5030') { mockup.style.width = '225px'; mockup.style.height = '135px'; }
+                else if (size === '5040') { mockup.style.width = '225px'; mockup.style.height = '180px'; }
+            }
+        }
+
         function togglePreview(elementId, isVisible) {
             const el = document.getElementById('preview-' + elementId);
             if (el) {
@@ -1611,6 +1667,14 @@
                     el.style.opacity = '0';
                     setTimeout(() => el.classList.add('hidden'), 300);
                 }
+            }
+        }
+
+        function toggleStickerPreview(elementId, isVisible) {
+            const el = document.getElementById('sticker-preview-' + elementId);
+            if (el) {
+                if (isVisible) el.classList.remove('hidden');
+                else el.classList.add('hidden');
             }
         }
 
