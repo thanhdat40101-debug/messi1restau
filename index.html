@@ -2,8 +2,16 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VNeID Clone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- PWA / Fullscreen Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#b71c1c">
+    <link rel="manifest" href='data:application/manifest+json,{"name":"VNeID Clone","short_name":"VNeID","display":"standalone","start_url":".","background_color":"#ffffff","theme_color":"#b71c1c"}'>
+
+    <title>VNeID</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,6 +32,7 @@
             background-color: #b71c1c;
             border-bottom-left-radius: 16px;
             border-bottom-right-radius: 16px;
+            padding-top: max(env(safe-area-inset-top, 32px), 32px);
         }
 
         .service-icon {
@@ -58,21 +67,6 @@
             font-weight: bold;
         }
 
-        .scan-button {
-            width: 50px;
-            height: 50px;
-            background-color: #da1e28;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            transform: translateY(-16px);
-            border: 3px solid white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
         .banner-gradient {
             background: linear-gradient(to right, #ffb74d, #ff9800);
             border-bottom: 6px solid #d32f2f;
@@ -91,8 +85,10 @@
         }
         
         .bottom-nav {
-            box-shadow: 0 -1px 5px rgba(0,0,0,0.05);
-            padding-bottom: env(safe-area-inset-bottom, 8px);
+            background-color: white;
+            box-shadow: 0 -1px 8px rgba(0,0,0,0.08);
+            padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);
+            padding-top: 6px;
         }
         
         .card-gradient {
@@ -100,10 +96,10 @@
         }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-24">
 
     <!-- Header Area -->
-    <div class="header-bg text-white pt-8 pb-4 px-4 relative shadow-sm">
+    <div class="header-bg text-white pb-4 px-4 relative shadow-sm">
         
         <!-- Top row -->
         <div class="flex justify-between items-center mb-4">
@@ -299,27 +295,68 @@
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="fixed bottom-0 w-full bg-white bottom-nav flex justify-between items-end px-2 pt-1 z-50">
-        <div class="flex flex-col items-center w-1/5 text-[#da1e28] pb-1">
-            <i class="fa-solid fa-house text-lg mb-0.5"></i>
-            <span class="text-[9px] font-bold">Trang chủ</span>
+    <div class="fixed bottom-0 w-full bottom-nav flex justify-between items-center z-50">
+        
+        <!-- Home -->
+        <div class="flex flex-col items-center w-1/5 text-[#da1e28]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="mb-[2px]">
+              <path d="M4 11L12 4.5L20 11V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V11Z" fill="#da1e28"/>
+              <rect x="11.5" y="16" width="1" height="5" fill="white"/>
+            </svg>
+            <span class="text-[11px] font-normal leading-none mt-0.5">Trang chủ</span>
         </div>
-        <div class="flex flex-col items-center w-1/5 text-gray-400 pb-1">
-            <i class="fa-solid fa-wallet text-lg mb-0.5"></i>
-            <span class="text-[9px]">Ví giấy tờ</span>
+        
+        <!-- Wallet -->
+        <div class="flex flex-col items-center w-1/5 text-gray-500">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="mb-[2px]">
+              <rect x="3" y="7" width="18" height="12" rx="3" stroke="#555" stroke-width="1.5"/>
+              <path d="M16 7V5.5C16 4.67157 15.3284 4 14.5 4H8.5C7.67157 4 7 4.67157 7 5.5V7" stroke="#555" stroke-width="1.5"/>
+              <path d="M18 11H21V15H18C17.4477 15 17 14.5523 17 14V12C17 11.4477 17.4477 11 18 11Z" fill="white" stroke="#555" stroke-width="1.5"/>
+              <circle cx="19.5" cy="13" r="0.5" fill="#555"/>
+            </svg>
+            <span class="text-[11px] font-normal leading-none mt-0.5">Ví giấy tờ</span>
         </div>
-        <div class="flex flex-col items-center w-1/5 relative">
-            <div class="scan-button">
-                <i class="fa-solid fa-qrcode text-xl"></i>
+        
+        <!-- Scan (Center) -->
+        <div class="flex flex-col items-center w-1/5">
+            <div class="w-[52px] h-[52px] bg-[#da1e28] rounded-[20px] flex items-center justify-center mb-1">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                  <!-- Corners -->
+                  <path d="M6 9V7C6 6.44772 6.44772 6 7 6H9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M15 6H17C17.5523 6 18 6.44772 18 7V9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M6 15V17C6 17.5523 6.44772 18 7 18H9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M15 18H17C17.5523 18 18 17.5523 18 17V15" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                  <!-- Scan line -->
+                  <line x1="4" y1="12" x2="20" y2="12" stroke="white" stroke-width="2"/>
+                  <!-- Gradient below line -->
+                  <rect x="5" y="12" width="14" height="6" fill="url(#scanGrad)" opacity="0.8"/>
+                  <defs>
+                    <linearGradient id="scanGrad" x1="12" y1="12" x2="12" y2="18" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="1"/>
+                      <stop offset="1" stop-color="white" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
             </div>
+            <!-- Space holder for text since there is no text here -->
         </div>
-        <div class="flex flex-col items-center w-1/5 text-gray-400 pb-1">
-            <i class="fa-regular fa-bell text-lg mb-0.5"></i>
-            <span class="text-[9px]">Thông báo</span>
+        
+        <!-- Notification -->
+        <div class="flex flex-col items-center w-1/5 text-gray-500">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="mb-[2px]">
+              <path d="M12 3C10.3431 3 9 4.34315 9 6V7.17157C7.82843 7.75736 7 8.97056 7 10.4142V16L5 18V19H19V18L17 16V10.4142C17 8.97056 16.1716 7.75736 15 7.17157V6C15 4.34315 13.6569 3 12 3Z" stroke="#555" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M10 20C10 21.1046 10.8954 22 12 22C13.1046 22 14 21.1046 14 20" stroke="#555" stroke-width="1.5"/>
+            </svg>
+            <span class="text-[11px] font-normal leading-none mt-0.5">Thông báo</span>
         </div>
-        <div class="flex flex-col items-center w-1/5 text-gray-400 pb-1">
-            <i class="fa-solid fa-gear text-lg mb-0.5"></i>
-            <span class="text-[9px]">Cài đặt</span>
+        
+        <!-- Settings -->
+        <div class="flex flex-col items-center w-1/5 text-gray-500">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="mb-[2px]">
+              <path d="M12 3.5L20.2272 8.25V15.75L12 20.5L3.77276 15.75V8.25L12 3.5Z" stroke="#555" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="3" stroke="#555" stroke-width="1.5"/>
+            </svg>
+            <span class="text-[11px] font-normal leading-none mt-0.5">Cài đặt</span>
         </div>
     </div>
 
