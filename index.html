@@ -1,305 +1,731 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#b71c1c">
-    <link rel="manifest" href='data:application/manifest+json,{"name":"VNeID","short_name":"VNeID","display":"standalone","start_url":".","background_color":"#ffffff","theme_color":"#b71c1c"}'>
-    <title>VNeID</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            margin: 0; padding: 0;
-            overflow-x: hidden;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .header-bg {
-            background-color: #b71c1c;
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            padding-top: max(env(safe-area-inset-top, 32px), 32px);
-        }
-        .service-icon {
-            width: 46px; height: 46px; border-radius: 50%;
-            background-color: #da1e28;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 20px; position: relative;
-        }
-        .service-icon.outline {
-            background-color: white; border: 1.5px solid #da1e28; color: #da1e28;
-        }
-        .service-badge {
-            position: absolute; top: -4px; right: -2px;
-            background-color: #da1e28; color: white;
-            font-size: 8px; padding: 1px 4px; border-radius: 8px;
-            border: 1px solid white; font-weight: bold;
-        }
-        .banner-gradient {
-            background: linear-gradient(to right, #ffb74d, #ff9800);
-            border-bottom: 6px solid #d32f2f;
-        }
-        .utility-icon-box {
-            width: 50px; height: 50px; background-color: white; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-bottom: 2px solid #b71c1c;
-        }
-        .card-gradient { background: linear-gradient(to right, #fef4cd, #fdebb0); }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a0b0b">
+<title>VNeID — Trang chủ</title>
+<style>
+  :root{
+    --red-900:#5e0505;
+    --red-800:#7a0808;
+    --red-700:#950c0c;
+    --red-600:#b31212;
+    --red-500:#d81c1c;
+    --gold:#f3c766;
+    --ink:#1f2126;
+    --ink-2:#4a4d55;
+    --gray:#8b8f98;
+    --line:#ececee;
+    --page:#f4f4f6;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:#2b2b30;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-text-size-adjust:100%;
+  }
+  /* khung điện thoại khi xem trên desktop */
+  .phone{
+    width:100%;
+    max-width:430px;
+    background:var(--page);
+    min-height:100vh;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 0 40px rgba(0,0,0,.55);
+  }
+  @media (max-width:430px){
+    body{background:var(--page)}
+    .phone{box-shadow:none;max-width:none}
+  }
 
-        /* ========= BOTTOM NAV ========= */
-        .bottom-nav-bar {
-            position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-            background: #fff;
-            box-shadow: 0 -1px 6px rgba(0,0,0,0.06);
-            display: flex; align-items: flex-end; justify-content: space-around;
-            padding: 8px 0 6px 0;
-            padding-bottom: max(env(safe-area-inset-bottom, 6px), 6px);
-        }
-        .nav-tab {
-            display: flex; flex-direction: column; align-items: center;
-            width: 20%; cursor: pointer; gap: 2px;
-        }
-        .nav-tab .nav-label {
-            font-size: 10px; line-height: 1; color: #888; font-weight: 400;
-        }
-        .nav-tab.active .nav-label {
-            color: #da1e28; font-weight: 500;
-        }
-        .scan-btn-wrap {
-            display: flex; flex-direction: column; align-items: center;
-            width: 20%; position: relative;
-        }
-        .scan-btn {
-            width: 52px; height: 52px;
-            background: #da1e28; border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            transform: translateY(-12px);
-            box-shadow: 0 3px 10px rgba(218,30,40,0.35);
-        }
-    </style>
+  /* ================= HERO ================= */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(120% 90% at 85% 0%, rgba(255,255,255,.10) 0%, transparent 55%),
+      linear-gradient(160deg,#a10f0f 0%,#8c0a0a 42%,#6f0505 100%);
+    color:#fff;
+    padding-bottom:14px;
+    overflow:hidden;
+  }
+  /* hoa văn trống đồng mờ */
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:-40px -40px auto -40px;
+    height:320px;
+    background-image:
+      radial-gradient(circle at 12% 30%, rgba(255,255,255,.055) 0 2px, transparent 3px),
+      radial-gradient(circle at 62% 12%, rgba(255,255,255,.045) 0 2px, transparent 3px),
+      radial-gradient(circle at 88% 62%, rgba(255,255,255,.05) 0 2px, transparent 3px),
+      radial-gradient(circle at 34% 78%, rgba(255,255,255,.04) 0 2px, transparent 3px);
+    background-size:120px 120px,150px 150px,180px 180px,140px 140px;
+    opacity:.9;
+    pointer-events:none;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-60px;top:-70px;
+    width:230px;height:230px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 0 0 22px rgba(255,255,255,.035), 0 0 0 46px rgba(255,255,255,.025);
+    pointer-events:none;
+  }
+
+  /* ---- thanh trạng thái giả lập ---- */
+  .statusbar{
+    position:relative;z-index:3;
+    height:34px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;
+    font-size:13px;font-weight:600;letter-spacing:.2px;
+  }
+  .statusbar .right{display:flex;align-items:center;gap:6px}
+  .statusbar .icon{display:block}
+
+  /* ---- hàng trên: avatar / pill / search ---- */
+  .hero-top{
+    position:relative;z-index:3;
+    display:grid;
+    grid-template-columns:52px minmax(0,1fr) 42px;
+    align-items:center;
+    gap:8px;
+    padding:2px 14px 0;
+  }
+  .avatar{
+    width:52px;height:52px;
+    border-radius:50%;
+    background:#f6d873;
+    border:2px solid #ffd982;
+    box-shadow:0 2px 8px rgba(0,0,0,.3);
+    display:grid;place-items:center;
+    font-size:27px;
+    position:relative;
+    overflow:visible;
+  }
+  .avatar .badge{
+    position:absolute;right:-4px;top:-4px;
+    width:20px;height:20px;border-radius:50%;
+    background:linear-gradient(180deg,#ffe08a,#e8a91d);
+    border:1.5px solid #fff;
+    display:grid;place-items:center;
+  }
+  .avatar .badge svg{width:11px;height:11px}
+
+  .pill{
+    justify-self:center;
+    display:inline-flex;align-items:center;gap:7px;
+    background:#fff;
+    color:#8a0b0b;
+    font-size:14px;font-weight:700;
+    padding:6px 12px 6px 14px;
+    border-radius:999px;
+    box-shadow:0 2px 6px rgba(0,0,0,.22);
+    white-space:nowrap;
+  }
+  .pill .star{
+    width:20px;height:20px;border-radius:50%;
+    background:#c8102e;
+    display:grid;place-items:center;
+    border:1px solid #a60d24;
+  }
+  .pill .star svg{width:12px;height:12px}
+
+  .search-btn{
+    width:42px;height:42px;border-radius:50%;
+    background:#fff;border:0;
+    display:grid;place-items:center;
+    box-shadow:0 2px 7px rgba(0,0,0,.22);
+    cursor:pointer;
+  }
+  .search-btn svg{width:21px;height:21px}
+
+  .hero-name{
+    position:relative;z-index:3;
+    margin:8px 0 14px;
+    text-align:center;
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    text-shadow:0 1px 3px rgba(0,0,0,.35);
+  }
+
+  /* ---- hai thẻ QR ---- */
+  .qr-row{
+    position:relative;z-index:3;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+    padding:0 14px;
+  }
+  .qr-card{
+    position:relative;
+    min-width:0;
+    display:flex;align-items:center;gap:9px;
+    padding:9px 10px;
+    border-radius:12px;
+    background:linear-gradient(180deg,#f7e7c0 0%,#f0dcae 55%,#e9d29c 100%);
+    border:1px solid #e4c98d;
+    color:#4a2b06;
+    box-shadow:0 2px 5px rgba(0,0,0,.18);
+    cursor:pointer;
+    overflow:hidden;
+  }
+  .qr-card::before{
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(115deg,rgba(255,255,255,.45) 0 2px,transparent 2px 11px);
+    opacity:.5;pointer-events:none;
+  }
+  .qr-thumb{
+    flex:0 0 40px;height:40px;border-radius:7px;
+    background:#fff;border:1px solid #d9bd85;
+    display:grid;place-items:center;overflow:hidden;
+    position:relative;z-index:1;
+  }
+  .qr-text{position:relative;z-index:1;line-height:1.22;min-width:0}
+  .qr-text b{display:block;font-size:14px;font-weight:800;color:#4a2b06}
+  .qr-text span{display:block;font-size:13.5px;font-weight:600;color:#3d2405}
+
+  /* ================= NỘI DUNG ================= */
+  .content{padding:16px 0 96px}
+
+  .section-title{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;
+    margin:0 0 14px;
+    font-size:20px;font-weight:800;color:#1f2126;
+  }
+  .edit-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:15px;font-weight:500;color:#33363d;
+    text-decoration:none;
+  }
+  .edit-link svg{width:18px;height:18px}
+
+  /* dịch vụ */
+  .services{
+    display:flex;
+    min-width:0;
+    gap:6px;
+    padding:0 10px;
+    margin-bottom:24px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    scroll-snap-type:x mandatory;
+  }
+  .services::-webkit-scrollbar{display:none}
+  .service{
+    flex:0 0 25%;
+    min-width:88px;
+    display:flex;flex-direction:column;align-items:center;
+    text-align:center;
+    scroll-snap-align:start;
+    cursor:pointer;
+  }
+  .service .bubble-wrap{position:relative;margin-bottom:8px}
+  .bubble{
+    width:62px;height:62px;border-radius:50%;
+    background:radial-gradient(circle at 32% 26%,#e01f1f 0%,#c00f0f 55%,#a80808 100%);
+    box-shadow:0 4px 10px rgba(180,10,10,.35);
+    display:grid;place-items:center;
+  }
+  .bubble svg{width:31px;height:31px}
+  .new-tag{
+    position:absolute;top:-4px;right:-12px;
+    background:linear-gradient(180deg,#e02424,#b60d0d);
+    color:#fff;font-size:10.5px;font-weight:600;
+    padding:2px 9px;border-radius:999px;
+    border:1px solid #fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.25);
+  }
+  .service .label{
+    font-size:13.5px;line-height:1.25;color:#26282e;font-weight:400;
+    padding:0 2px;
+  }
+
+  /* banner định danh tổ chức */
+  .org-banner{
+    margin:0 16px 20px;
+    display:flex;align-items:center;gap:12px;
+    background:linear-gradient(180deg,#d51a1a 0%,#bd1010 100%);
+    border-radius:14px;
+    padding:12px 12px 12px 12px;
+    color:#fff;
+    box-shadow:0 5px 14px rgba(190,16,16,.32);
+    cursor:pointer;
+  }
+  .org-icon{
+    flex:0 0 44px;height:44px;border-radius:50%;
+    background:#fff2d8;
+    display:grid;place-items:center;
+    border:2px solid #ffd66b;
+  }
+  .org-icon svg{width:26px;height:26px}
+  .org-text{flex:1;min-width:0}
+  .org-text b{display:block;font-size:18px;font-weight:800;line-height:1.2}
+  .org-text span{display:block;font-size:13.5px;font-style:italic;color:#ffe0d8;margin-top:3px}
+  .org-arrow{
+    flex:0 0 40px;height:40px;border-radius:9px;background:#fff;
+    display:grid;place-items:center;
+  }
+  .org-arrow svg{width:22px;height:22px}
+
+  /* banner góp ý */
+  .feedback{
+    position:relative;
+    margin:0 16px 26px;
+    border-radius:14px;
+    overflow:hidden;
+    background:
+      radial-gradient(90% 120% at 12% 0%,rgba(255,255,255,.35) 0%,transparent 40%),
+      radial-gradient(80% 100% at 90% 100%,rgba(255,214,90,.55) 0%,transparent 45%),
+      linear-gradient(165deg,#ffbe2e 0%,#f79b16 45%,#ef7d10 100%);
+    border:2px solid #e8e2d6;
+    padding:16px 14px 18px;
+    text-align:center;
+    box-shadow:0 6px 18px rgba(200,120,10,.28);
+  }
+  .feedback .script{
+    font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+    font-size:34px;line-height:1;color:#fff8dc;
+    text-shadow:0 2px 0 #b3540a,0 0 12px rgba(255,255,255,.5);
+    margin-bottom:2px;
+  }
+  .feedback .title{
+    font-size:23px;font-weight:900;line-height:1.15;
+    color:#fff;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    text-shadow:
+      1.5px 0 0 #a83f06, -1.5px 0 0 #a83f06, 0 1.5px 0 #a83f06, 0 -1.5px 0 #a83f06,
+      0 4px 8px rgba(120,50,0,.45);
+  }
+  .feedback .sub{
+    font-size:19px;font-weight:900;color:#fff;margin-top:4px;
+    text-shadow:1.2px 0 0 #a83f06,-1.2px 0 0 #a83f06,0 1.2px 0 #a83f06,0 -1.2px 0 #a83f06;
+  }
+  .feedback .cta{
+    display:inline-block;margin-top:14px;
+    background:rgba(255,255,255,.16);
+    border:1.5px solid #fff;
+    color:#fff;font-size:15px;font-weight:700;
+    padding:8px 20px;border-radius:8px;
+    box-shadow:0 2px 6px rgba(120,50,0,.25);
+    cursor:pointer;
+  }
+  .fb-deco{position:absolute;font-size:26px;line-height:1;filter:drop-shadow(0 2px 3px rgba(120,60,0,.35));pointer-events:none}
+  .fb-deco.left{bottom:6px;left:8px;display:flex;align-items:flex-end;gap:2px;font-size:30px;transform:rotate(-6deg)}
+  .fb-deco.right{bottom:8px;right:6px;display:flex;align-items:flex-end;gap:2px;transform:rotate(6deg)}
+  .fb-deco.doc{top:8px;left:10px;font-size:24px;opacity:.9}
+
+  /* tiện ích yêu thích */
+  .utils{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    padding:0 10px;
+  }
+  .util{
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    cursor:pointer;
+  }
+  .util .ring{
+    width:64px;height:64px;border-radius:50%;
+    background:#fff;
+    border:2px solid #f0d9a8;
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+    display:grid;place-items:center;
+    margin-bottom:10px;
+  }
+  .util .ring svg{width:34px;height:34px}
+  .util .label{font-size:14px;line-height:1.28;color:#26282e}
+
+  /* ================= BOTTOM NAV ================= */
+  .tabbar{
+    position:fixed;
+    left:50%;transform:translateX(-50%);
+    bottom:0;
+    width:100%;max-width:430px;
+    background:#fff;
+    border-top:1px solid var(--line);
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    align-items:end;
+    padding:8px 4px 10px;
+    z-index:20;
+  }
+  @media (max-width:430px){.tabbar{max-width:none}}
+  .tab{
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    background:none;border:0;padding:0;cursor:pointer;
+    color:var(--gray);font-size:13px;font-family:inherit;
+  }
+  .tab svg{width:26px;height:26px;display:block}
+  .tab.active{color:#d21b1b;font-weight:600}
+  .tab.center{transform:translateY(-16px)}
+  .tab.center .scan{
+    width:58px;height:58px;border-radius:50%;
+    background:linear-gradient(180deg,#e02424,#bf1010);
+    display:grid;place-items:center;
+    box-shadow:0 6px 14px rgba(190,16,16,.42);
+  }
+  .tab.center .scan svg{width:28px;height:28px}
+  .tab.center .dot{
+    width:5px;height:5px;border-radius:50%;
+    background:#c9ccd3;margin-top:6px;
+  }
+  .home-indicator{
+    position:fixed;left:50%;transform:translateX(-50%);
+    bottom:4px;width:130px;max-width:38%;height:4px;border-radius:999px;
+    background:#111;opacity:.75;z-index:21;pointer-events:none;
+  }
+</style>
 </head>
-<body class="pb-[76px]">
+<body>
+<div class="phone">
 
-    <!-- Header -->
-    <div class="header-bg text-white pb-4 px-4 shadow-sm">
-        <div class="flex justify-between items-center mb-4">
-            <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center" style="box-shadow: inset 0 0 0 2px #ff9800;">
-                <i class="fa-solid fa-face-smile text-orange-600 text-2xl" style="opacity:.8"></i>
-            </div>
-            <div class="bg-white text-gray-800 px-3 py-1 rounded-full text-[11px] font-bold flex items-center shadow-sm">
-                Định danh mức 2
-                <div class="ml-1.5 w-4 h-4 bg-[#da1e28] rounded-full flex items-center justify-center">
-                    <i class="fa-solid fa-star text-yellow-300 text-[8px]"></i>
-                </div>
-            </div>
-            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm">
-                <i class="fa-solid fa-magnifying-glass text-xs"></i>
-            </div>
-        </div>
-        <div class="text-center mb-4">
-            <h1 class="text-[15px] font-bold uppercase tracking-wide">TRƯƠNG THANH TÙNG</h1>
-        </div>
-        <div class="flex gap-2">
-            <div class="flex-1 card-gradient rounded-lg p-2 flex items-center gap-2 text-gray-800 shadow-sm">
-                <div class="w-8 h-8 bg-white rounded flex items-center justify-center border border-gray-200">
-                    <div class="w-6 h-4 bg-blue-50 border border-blue-200 flex items-center px-[2px]">
-                        <div class="w-1.5 h-2 bg-gray-400 rounded-sm"></div>
-                        <div class="flex-1 ml-1 flex flex-col gap-[1.5px]">
-                            <div class="w-full h-[1px] bg-gray-400"></div>
-                            <div class="w-2/3 h-[1px] bg-gray-400"></div>
-                        </div>
-                    </div>
-                </div>
-                <div><div class="text-[9px] text-gray-600">Mã QR</div><div class="text-[11px] font-bold">Thẻ CCCD</div></div>
-            </div>
-            <div class="flex-1 card-gradient rounded-lg p-2 flex items-center gap-2 text-gray-800 shadow-sm">
-                <div class="w-8 h-8 bg-[#2e7d32] rounded flex items-center justify-center text-white relative">
-                    <i class="fa-solid fa-shield-halved text-sm"></i>
-                    <i class="fa-solid fa-star text-yellow-400 absolute text-[6px]"></i>
-                </div>
-                <div><div class="text-[9px] text-gray-600">Mã QR</div><div class="text-[11px] font-bold">Định danh điện tử</div></div>
-            </div>
-        </div>
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+
+    <!-- thanh trạng thái -->
+    <div class="statusbar">
+      <span>19:13</span>
+      <span class="right">
+        <!-- youtube -->
+        <svg class="icon" width="18" height="13" viewBox="0 0 24 17" fill="#fff">
+          <rect x="0" y="0" width="24" height="17" rx="4.5"/>
+          <path d="M9.8 4.6v7.8l6.6-3.9z" fill="#5e0505"/>
+        </svg>
+        <!-- sóng -->
+        <svg class="icon" width="15" height="12" viewBox="0 0 15 12" fill="#fff">
+          <rect x="0"  y="8" width="3" height="4" rx="1"/>
+          <rect x="4"  y="5.5" width="3" height="6.5" rx="1"/>
+          <rect x="8"  y="3" width="3" height="9" rx="1"/>
+          <rect x="12" y="0" width="3" height="12" rx="1"/>
+        </svg>
+        <!-- wifi -->
+        <svg class="icon" width="16" height="12" viewBox="0 0 16 12" fill="#fff">
+          <path d="M8 11.2 6.05 8.9A2.9 2.9 0 0 1 8 8.1c.75 0 1.44.29 1.95.8z"/>
+          <path d="M8 5.6c-1.5 0-2.9.55-3.98 1.46L2.6 5.4A8.4 8.4 0 0 1 8 3.3c2.1 0 4.03.8 5.4 2.1l-1.42 1.66A6.1 6.1 0 0 0 8 5.6z"/>
+          <path d="M8 1.2c-2.9 0-5.6 1.05-7.65 2.8L.35 2.3A12.9 12.9 0 0 1 8 .1c2.98 0 5.72 1 7.65 2.2L14.24 4A11.1 11.1 0 0 0 8 1.2z"/>
+        </svg>
+        <!-- pin -->
+        <span style="display:flex;align-items:center">
+          <span style="display:inline-grid;place-items:center;width:24px;height:12px;border:1.4px solid rgba(255,255,255,.85);border-radius:3px;padding:1px">
+            <span style="display:block;width:100%;height:100%;background:#fff;border-radius:1px"></span>
+          </span>
+          <span style="font-size:12.5px;margin-left:3px;font-weight:600">22</span>
+        </span>
+      </span>
     </div>
 
-    <!-- Content -->
-    <div class="px-4 mt-4">
-        <!-- Nhóm dịch vụ -->
-        <div class="mb-5">
-            <h2 class="text-[13px] font-bold text-gray-800 mb-3">Nhóm dịch vụ</h2>
-            <div class="flex justify-between overflow-x-auto hide-scrollbar gap-2 pb-1">
-                <div class="flex flex-col items-center w-1/5 min-w-[60px]">
-                    <div class="service-icon"><span class="service-badge">Mới</span><i class="fa-solid fa-building-columns text-[20px]"></i></div>
-                    <div class="text-[10px] text-center mt-1.5 text-gray-700 leading-tight">Thủ tục<br>hành chính</div>
-                </div>
-                <div class="flex flex-col items-center w-1/5 min-w-[60px]">
-                    <div class="service-icon"><span class="service-badge">Mới</span><i class="fa-solid fa-spa text-[20px]"></i></div>
-                    <div class="text-[10px] text-center mt-1.5 text-gray-700 leading-tight">An sinh xã<br>hội</div>
-                </div>
-                <div class="flex flex-col items-center w-1/5 min-w-[60px]">
-                    <div class="service-icon"><span class="service-badge">Mới</span><i class="fa-solid fa-shield-heart text-[20px]"></i></div>
-                    <div class="text-[10px] text-center mt-1.5 text-gray-700 leading-tight">Hồ sơ sức<br>khỏe</div>
-                </div>
-                <div class="flex flex-col items-center w-1/5 min-w-[60px]">
-                    <div class="service-icon"><span class="service-badge">Mới</span><i class="fa-regular fa-star text-[20px]"></i></div>
-                    <div class="text-[10px] text-center mt-1.5 text-gray-700 leading-tight">Dịch vụ<br>khác</div>
-                </div>
-                <div class="flex flex-col items-center w-1/5 min-w-[60px]">
-                    <div class="service-icon outline"><i class="fa-solid fa-expand text-[20px]"></i></div>
-                    <div class="text-[10px] text-center mt-1.5 text-gray-700 leading-tight">Định<br>người 14</div>
-                </div>
-            </div>
-        </div>
-        <!-- Định danh tổ chức -->
-        <div class="bg-[#da1e28] rounded-xl p-3 flex items-center justify-between text-white mb-5 shadow-sm">
-            <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 bg-[#fff4db] rounded flex items-center justify-center text-orange-400 relative">
-                    <i class="fa-solid fa-building text-xl"></i>
-                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-[#da1e28] rounded-full flex items-center justify-center border border-white">
-                        <i class="fa-solid fa-check text-[8px] text-white"></i>
-                    </div>
-                </div>
-                <div>
-                    <div class="font-bold text-[13px] leading-tight">Định danh tổ chức</div>
-                    <div class="text-[10px] italic font-light">(Nhấn để đổi vai trò sang tổ chức)</div>
-                </div>
-            </div>
-            <div class="w-6 h-6 bg-white text-[#da1e28] rounded flex items-center justify-center">
-                <i class="fa-solid fa-arrow-down-up-across-line text-[10px]"></i>
-            </div>
-        </div>
-        <!-- Campaign Banner -->
-        <div class="banner-gradient rounded-xl p-3 text-center text-white mb-5 relative overflow-hidden flex flex-col justify-center items-center h-[110px]">
-            <div class="z-10 w-full flex flex-col items-center">
-                <div class="text-yellow-100 text-lg mb-0.5" style="font-family:'Brush Script MT',cursive,serif;">Góp ý</div>
-                <h3 class="font-bold text-[14px] leading-tight mb-2 text-[#b71c1c] uppercase">DỰ THẢO LUẬT KINH DOANH<br>BẤT ĐỘNG SẢN<br><span class="text-[11px] text-white">(sửa đổi)</span></h3>
-                <button class="bg-[#b71c1c] text-white px-6 py-1 rounded-md text-[10px] font-bold shadow-sm">Gửi góp ý</button>
-            </div>
-        </div>
-        <!-- Tiện ích yêu thích -->
-        <div class="mb-6">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-[13px] font-bold text-gray-800">Tiện ích yêu thích</h2>
-                <button class="text-gray-500 text-[11px] flex items-center gap-1">Chỉnh sửa <i class="fa-solid fa-pencil text-[#da1e28]"></i></button>
-            </div>
-            <div class="grid grid-cols-3 gap-2">
-                <div class="flex flex-col items-center">
-                    <div class="utility-icon-box mb-1.5">
-                        <div class="w-7 h-5 border border-orange-600 rounded-sm flex overflow-hidden relative">
-                           <div class="w-1/3 bg-orange-100 h-full"></div>
-                           <div class="absolute right-0.5 top-0.5 w-3 h-[2px] bg-orange-600"></div>
-                           <div class="absolute right-0.5 top-2 w-2 h-[2px] bg-orange-400"></div>
-                        </div>
-                    </div>
-                    <div class="text-[10px] text-center text-gray-700 leading-tight">Thẻ Căn cước/<br>CCCD</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="utility-icon-box mb-1.5 relative">
-                        <i class="fa-solid fa-car-side text-xl text-orange-600"></i>
-                        <div class="absolute top-1 right-0 w-3.5 h-3.5 bg-white rounded-full border border-[#da1e28] flex items-center justify-center">
-                            <i class="fa-solid fa-check text-[6px] text-[#da1e28]"></i>
-                        </div>
-                    </div>
-                    <div class="text-[10px] text-center text-gray-700 leading-tight mt-1">Giấy phép lái xe</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="utility-icon-box mb-1.5">
-                        <div class="relative flex justify-center items-center">
-                            <i class="fa-solid fa-shield text-2xl text-orange-600"></i>
-                            <i class="fa-solid fa-plus text-white absolute text-[10px] font-bold"></i>
-                        </div>
-                    </div>
-                    <div class="text-[10px] text-center text-gray-700 leading-tight mt-1">Thẻ BHYT</div>
-                </div>
-            </div>
-        </div>
+    <!-- avatar / định danh / tìm kiếm -->
+    <div class="hero-top">
+      <div class="avatar">
+        😅
+        <span class="badge">
+          <svg viewBox="0 0 24 24" fill="#f6c445" stroke="#a9760c" stroke-width="1.5">
+            <path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.7 6.1 20.8l1.2-6.6L2.5 9.6l6.6-.9z"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="pill">
+        Định danh mức 2
+        <span class="star">
+          <svg viewBox="0 0 24 24" fill="#ffd54a">
+            <path d="M12 2.8l3 6.2 6.8.9-4.9 4.7 1.2 6.8L12 18.2 5.9 21.4l1.2-6.8L2.2 9.9l6.8-.9z"/>
+          </svg>
+        </span>
+      </div>
+
+      <button class="search-btn" aria-label="Tìm kiếm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8a0b0b" stroke-width="2.6" stroke-linecap="round">
+          <circle cx="10.5" cy="10.5" r="6.8"/>
+          <path d="M15.6 15.6L21 21"/>
+        </svg>
+      </button>
     </div>
 
-    <!-- ======== BOTTOM NAVIGATION BAR ======== -->
-    <div class="bottom-nav-bar">
+    <h1 class="hero-name">TRƯƠNG THANH TÙNG</h1>
 
-        <!-- 1. TRANG CHỦ  ─  ngôi nhà đỏ đặc, mái nhọn bo tròn, khe cửa trắng nhỏ -->
-        <div class="nav-tab active">
-            <svg width="24" height="24" viewBox="0 0 48 48">
-                <path d="M24 6 L6 22 C5 23 5.5 24.5 7 24.5 L10 24.5 L10 38 C10 40 11.5 41 13 41 L35 41 C36.5 41 38 40 38 38 L38 24.5 L41 24.5 C42.5 24.5 43 23 42 22 L24 6Z" fill="#da1e28"/>
-                <rect x="21" y="27" width="6" height="12" rx="2.5" fill="white"/>
+    <!-- hai thẻ QR -->
+    <div class="qr-row">
+      <div class="qr-card">
+        <span class="qr-thumb">
+          <svg viewBox="0 0 44 34" width="36" height="28">
+            <rect x="1" y="1" width="42" height="32" rx="4" fill="#eaf1f8" stroke="#c8d4e2"/>
+            <circle cx="13" cy="13" r="5.4" fill="#b9c8d8"/>
+            <path d="M4 28c1.6-4.4 5-6.6 9-6.6s7.4 2.2 9 6.6z" fill="#b9c8d8"/>
+            <rect x="25" y="8" width="14" height="2.4" rx="1.2" fill="#c2d0de"/>
+            <rect x="25" y="13.5" width="14" height="2.4" rx="1.2" fill="#c2d0de"/>
+            <rect x="25" y="19" width="10" height="2.4" rx="1.2" fill="#c2d0de"/>
+          </svg>
+        </span>
+        <span class="qr-text"><b>Mã QR</b><span>Thẻ CCCD</span></span>
+      </div>
+
+      <div class="qr-card">
+        <span class="qr-thumb">
+          <svg viewBox="0 0 44 34" width="36" height="28">
+            <rect x="1" y="1" width="42" height="32" rx="4" fill="#fdeaea" stroke="#e6bcbc"/>
+            <circle cx="22" cy="17" r="13" fill="#c8102e"/>
+            <path d="M22 8.4l2.05 4.2 4.65.6-3.35 3.2.8 4.6-4.15-2.2-4.15 2.2.8-4.6-3.35-3.2 4.65-.6z" fill="#ffd54a"/>
+          </svg>
+        </span>
+        <span class="qr-text"><b>Mã QR</b><span>Định danh điện tử</span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ NỘI DUNG ============ -->
+  <main class="content">
+
+    <h2 class="section-title" style="margin-top:4px">Nhóm dịch vụ</h2>
+
+    <div class="services">
+      <!-- 1 -->
+      <div class="service">
+        <div class="bubble-wrap">
+          <div class="bubble">
+            <svg viewBox="0 0 24 24" fill="#fff">
+              <path d="M12 2.6 2.4 7.2v1.7h19.2V7.2z"/>
+              <rect x="4.2" y="10.4" width="2.5" height="7.4"/>
+              <rect x="8.5" y="10.4" width="2.5" height="7.4"/>
+              <rect x="12.8" y="10.4" width="2.5" height="7.4"/>
+              <rect x="17.1" y="10.4" width="2.5" height="7.4"/>
+              <rect x="2.4" y="19.2" width="19.2" height="3.1" rx=".6"/>
             </svg>
-            <span class="nav-label">Trang chủ</span>
+          </div>
+          <span class="new-tag">Mới</span>
         </div>
+        <div class="label">Thủ tục<br>hành chính</div>
+      </div>
 
-        <!-- 2. VÍ GIẤY TỜ  ─  ví outline, thân bo tròn lớn, nắp nhỏ bên phải, vạch ngang -->
-        <div class="nav-tab">
-            <svg width="24" height="24" viewBox="0 0 48 48">
-                <!-- Wallet body -->
-                <rect x="5" y="14" width="32" height="24" rx="6" ry="6" fill="none" stroke="#555" stroke-width="3"/>
-                <!-- Flap / clasp on right -->
-                <path d="M37 20 L34 20 C31.5 20 30 21.5 30 23.5 L30 28.5 C30 30.5 31.5 32 34 32 L37 32" fill="white" stroke="#555" stroke-width="3"/>
-                <!-- Horizontal line inside -->
-                <line x1="12" y1="22" x2="24" y2="22" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 2 -->
+      <div class="service">
+        <div class="bubble-wrap">
+          <div class="bubble">
+            <svg viewBox="0 0 24 24" fill="#fff">
+              <circle cx="12" cy="5.4" r="3"/>
+              <circle cx="5.4" cy="10" r="3"/>
+              <circle cx="18.6" cy="10" r="3"/>
+              <circle cx="7.6" cy="17.6" r="3"/>
+              <circle cx="16.4" cy="17.6" r="3"/>
+              <circle cx="12" cy="11.8" r="2.6"/>
             </svg>
-            <span class="nav-label">Ví giấy tờ</span>
+          </div>
+          <span class="new-tag">Mới</span>
         </div>
+        <div class="label">An sinh xã<br>hội</div>
+      </div>
 
-        <!-- 3. NÚT SCAN GIỮA  ─  vuông đỏ bo tròn lớn, 4 góc ngoặc, thẻ + vạch quét + phát sáng -->
-        <div class="scan-btn-wrap">
-            <div class="scan-btn">
-                <svg width="28" height="28" viewBox="0 0 48 48">
-                    <defs>
-                        <linearGradient id="glow" x1="24" y1="24" x2="24" y2="38" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="white" stop-opacity="0.7"/>
-                            <stop offset="1" stop-color="white" stop-opacity="0"/>
-                        </linearGradient>
-                    </defs>
-                    <!-- Corner brackets -->
-                    <path d="M8 17 L8 12 C8 9.5 9.5 8 12 8 L17 8" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M31 8 L36 8 C38.5 8 40 9.5 40 12 L40 17" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M8 31 L8 36 C8 38.5 9.5 40 12 40 L17 40" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M31 40 L36 40 C38.5 40 40 38.5 40 36 L40 31" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                    <!-- Card/ID shape -->
-                    <rect x="13" y="15" width="22" height="14" rx="3" fill="white" opacity="0.3"/>
-                    <!-- Scan line -->
-                    <line x1="6" y1="25" x2="42" y2="25" stroke="white" stroke-width="2.5"/>
-                    <!-- Glow -->
-                    <rect x="10" y="25" width="28" height="13" fill="url(#glow)"/>
-                </svg>
-            </div>
-        </div>
-
-        <!-- 4. THÔNG BÁO  ─  chuông outline, thân tròn bo, miệng rộng, chốt lắc nhỏ -->
-        <div class="nav-tab">
-            <svg width="24" height="24" viewBox="0 0 48 48">
-                <!-- Bell body: dome top, flared bottom -->
-                <path d="M16 30 C16 18 20 10 24 10 C28 10 32 18 32 30 L16 30 Z" fill="none" stroke="#555" stroke-width="3" stroke-linejoin="round"/>
-                <!-- Bell rim -->
-                <path d="M13 30 C13 33 14.5 34 16 34.5 L32 34.5 C33.5 34 35 33 35 30" fill="none" stroke="#555" stroke-width="3" stroke-linecap="round"/>
-                <!-- Clapper -->
-                <path d="M21 35.5 C21 38.5 22.5 40 24 40 C25.5 40 27 38.5 27 35.5" fill="none" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 3 -->
+      <div class="service">
+        <div class="bubble-wrap">
+          <div class="bubble">
+            <svg viewBox="0 0 24 24" fill="#fff">
+              <path d="M12 2.2 3.8 5.4v6.1c0 5 3.4 9 8.2 10.3 4.8-1.3 8.2-5.3 8.2-10.3V5.4z"/>
+              <path d="M12 6.6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" fill="#c00f0f"/>
+              <path d="M12 11.6c-1.9 0-3.4 1.4-3.4 3.3v1.3c.9.9 2.1 1.5 3.4 1.5s2.5-.6 3.4-1.5v-1.3c0-1.9-1.5-3.3-3.4-3.3z" fill="#c00f0f"/>
             </svg>
-            <span class="nav-label">Thông báo</span>
+          </div>
+          <span class="new-tag">Mới</span>
         </div>
+        <div class="label">Hồ sơ sức<br>khỏe</div>
+      </div>
 
-        <!-- 5. CÀI ĐẶT  ─  lục giác outline + vòng tròn outline + chấm tròn đặc ở giữa -->
-        <div class="nav-tab">
-            <svg width="24" height="24" viewBox="0 0 48 48">
-                <!-- Hexagon: flat top & bottom -->
-                <polygon points="24,5 41,14.5 41,33.5 24,43 7,33.5 7,14.5" fill="none" stroke="#555" stroke-width="3" stroke-linejoin="round"/>
-                <!-- Circle -->
-                <circle cx="24" cy="24" r="7.5" fill="none" stroke="#555" stroke-width="3"/>
-                <!-- Center dot -->
-                <circle cx="24" cy="24" r="3" fill="#555"/>
+      <!-- 4 -->
+      <div class="service">
+        <div class="bubble-wrap">
+          <div class="bubble">
+            <svg viewBox="0 0 24 24" fill="#fff">
+              <path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.7 6.1 20.8l1.2-6.6L2.5 9.6l6.6-.9z"/>
             </svg>
-            <span class="nav-label">Cài đặt</span>
+          </div>
+          <span class="new-tag">Mới</span>
         </div>
+        <div class="label">Dịch vụ<br>khác</div>
+      </div>
 
+      <!-- 5 (bị cắt ở mép phải như trong ảnh) -->
+      <div class="service">
+        <div class="bubble-wrap">
+          <div class="bubble">
+            <svg viewBox="0 0 24 24" fill="#fff">
+              <path d="M12 2.2 3.8 5.4v6.1c0 5 3.4 9 8.2 10.3 4.8-1.3 8.2-5.3 8.2-10.3V5.4z"/>
+              <path d="M12 7.6a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8zM9.1 17.6c0-1.9 1.3-3.1 2.9-3.1s2.9 1.2 2.9 3.1z" fill="#c00f0f"/>
+            </svg>
+          </div>
+        </div>
+        <div class="label">Định danh<br>người</div>
+      </div>
     </div>
 
+    <!-- định danh tổ chức -->
+    <div class="org-banner">
+      <div class="org-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 21V9.6L12 3l9 6.6V21z" fill="#e08a12"/>
+          <rect x="6" y="11" width="2.2" height="3" fill="#fff"/>
+          <rect x="9.6" y="11" width="2.2" height="3" fill="#fff"/>
+          <rect x="13.2" y="11" width="2.2" height="3" fill="#fff"/>
+          <rect x="16.8" y="11" width="2.2" height="3" fill="#fff"/>
+          <rect x="6" y="15.6" width="2.2" height="3" fill="#fff"/>
+          <rect x="9.6" y="15.6" width="2.2" height="3" fill="#fff"/>
+          <rect x="13.2" y="15.6" width="2.2" height="3" fill="#fff"/>
+          <circle cx="19" cy="19" r="4.6" fill="#c8102e"/>
+          <path d="M16.9 19l1.5 1.5 2.7-2.8" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="org-text">
+        <b>Định danh tổ chức</b>
+        <span>(Nhấn để đổi vai trò sang tổ chức)</span>
+      </div>
+      <div class="org-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c00f0f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 4H6.5A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20H15"/>
+          <path d="M12 8.2 15.8 12 12 15.8"/>
+          <path d="M15.8 12H8"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- góp ý dự thảo -->
+    <div class="feedback">
+      <span class="fb-deco doc">📄</span>
+      <div class="script">Góp ý</div>
+      <div class="title">Dự thảo bộ luật tố tụng hình sự</div>
+      <div class="sub">(sửa đổi)</div>
+      <div class="cta">Gửi góp ý</div>
+      <span class="fb-deco left">⚖️<span style="font-size:34px">📚</span></span>
+      <span class="fb-deco right">📱<span style="font-size:30px">✉️</span></span>
+    </div>
+
+    <!-- tiện ích yêu thích -->
+    <h2 class="section-title">Tiện ích yêu thích</h2>
+    <div class="utils">
+      <div class="util">
+        <div class="ring">
+          <svg viewBox="0 0 32 32">
+            <rect x="3" y="6" width="26" height="20" rx="3" fill="#fff2d8" stroke="#e8b64a" stroke-width="1.6"/>
+            <circle cx="13" cy="14" r="5.4" fill="#7fb2e0"/>
+            <path d="M5.5 24c1.5-4 4.4-6 7.5-6s6 2 7.5 6z" fill="#7fb2e0"/>
+            <rect x="20" y="10" width="8" height="1.8" rx=".9" fill="#e8b64a"/>
+            <rect x="20" y="14" width="8" height="1.8" rx=".9" fill="#e8b64a"/>
+            <rect x="20" y="18" width="5.5" height="1.8" rx=".9" fill="#e8b64a"/>
+          </svg>
+        </div>
+        <div class="label">Thẻ Căn cước/<br>CCCD</div>
+      </div>
+
+      <div class="util">
+        <div class="ring">
+          <svg viewBox="0 0 32 32">
+            <rect x="3" y="5" width="26" height="22" rx="3" fill="#fff6e0" stroke="#e8b64a" stroke-width="1.6"/>
+            <path d="M8 19h3.6l1.6-4 2.4 7 2.2-5.4 1.4 2.4H24" stroke="#c8102e" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 9.6l1.5 3.1 3.4.5-2.5 2.4.6 3.4-3-1.6-3 1.6.6-3.4-2.5-2.4 3.4-.5z" fill="#f0b429"/>
+            <rect x="12" y="22.5" width="8" height="4" rx="1.2" fill="#c8102e"/>
+          </svg>
+        </div>
+        <div class="label">Giấy phép lái xe</div>
+      </div>
+
+      <div class="util">
+        <div class="ring">
+          <svg viewBox="0 0 32 32">
+            <path d="M16 3 5 8.1v8.2c0 6.6 4.6 11.9 11 13.7 6.4-1.8 11-7.1 11-13.7V8.1z" fill="#fff4e6" stroke="#e8b64a" stroke-width="1.7"/>
+            <rect x="12.6" y="9" width="6.8" height="14" rx="1.6" fill="#d21b1b"/>
+            <rect x="9" y="12.6" width="14" height="6.8" rx="1.6" fill="#d21b1b"/>
+          </svg>
+        </div>
+        <div class="label">Thẻ BHYT</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ TAB BAR ============ -->
+  <nav class="tabbar">
+    <button class="tab active" data-tab="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round">
+        <path d="M3.4 10.6 12 3.6l8.6 7"/>
+        <path d="M5.4 9.6V20h13.2V9.6" fill="currentColor" stroke="none" opacity=".18"/>
+        <path d="M5.4 9.6V20h13.2V9.6"/>
+        <rect x="10" y="13.4" width="4" height="6.6" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>Trang chủ</span>
+    </button>
+
+    <button class="tab" data-tab="wallet">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="4.4" y="4.6" width="15.2" height="15.4" rx="3"/>
+        <rect x="7.4" y="3" width="9.2" height="3.4" rx="1.4"/>
+        <path d="M8.4 11.6h7.2M8.4 15.2h4.6" stroke-linecap="round"/>
+      </svg>
+      <span>Ví giấy tờ</span>
+    </button>
+
+    <button class="tab center" data-tab="scan">
+      <span class="scan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round">
+          <path d="M3.4 8.6V5.6a2.2 2.2 0 0 1 2.2-2.2h3"/>
+          <path d="M20.6 8.6V5.6a2.2 2.2 0 0 0-2.2-2.2h-3"/>
+          <path d="M3.4 15.4v3a2.2 2.2 0 0 0 2.2 2.2h3"/>
+          <path d="M20.6 15.4v3a2.2 2.2 0 0 1-2.2 2.2h-3"/>
+          <rect x="9.2" y="9.2" width="5.6" height="5.6" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <span class="dot"></span>
+    </button>
+
+    <button class="tab" data-tab="notify">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M6.6 9.6a5.4 5.4 0 0 1 10.8 0c0 4.4 1.6 5.6 1.6 5.6H5s1.6-1.2 1.6-5.6z"/>
+        <path d="M10.2 18.6a2 2 0 0 0 3.6 0" stroke-linecap="round"/>
+      </svg>
+      <span>Thông báo</span>
+    </button>
+
+    <button class="tab" data-tab="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M12 2.9 20 7.4v9.2L12 21.1 4 16.6V7.4z"/>
+        <circle cx="12" cy="12" r="2.6"/>
+      </svg>
+      <span>Cài đặt</span>
+    </button>
+  </nav>
+
+  <div class="home-indicator"></div>
+</div>
+
+<script>
+  // đổi tab
+  document.querySelectorAll('.tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('active'); });
+      if (btn.dataset.tab !== 'scan') btn.classList.add('active');
+    });
+  });
+
+  // hiệu ứng nhấn nhẹ cho các thẻ
+  document.querySelectorAll('.qr-card, .org-banner, .feedback .cta, .service, .util').forEach(function (el) {
+    el.addEventListener('touchstart', function () { el.style.opacity = '.82'; }, { passive: true });
+    el.addEventListener('touchend', function () { el.style.opacity = ''; }, { passive: true });
+    el.addEventListener('mousedown', function () { el.style.opacity = '.82'; });
+    el.addEventListener('mouseup', function () { el.style.opacity = ''; });
+    el.addEventListener('mouseleave', function () { el.style.opacity = ''; });
+  });
+</script>
 </body>
 </html>
